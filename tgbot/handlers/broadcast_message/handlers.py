@@ -8,10 +8,34 @@ from dtb.settings import DEBUG
 from .manage_data import CONFIRM_DECLINE_BROADCAST, CONFIRM_BROADCAST
 from .keyboards import keyboard_confirm_decline_broadcasting
 from .static_text import broadcast_command, broadcast_wrong_format, broadcast_no_access, error_with_html, \
-    message_is_sent, declined_message_broadcasting
+    message_is_sent, declined_message_broadcasting, reports_no_access, reports_wrong_format
 from users.models import User
 from users.tasks import broadcast_message
 
+def reports(update: Update, context: CallbackContext):
+    """ Reports."""
+    u = User.get_user(update, context)
+
+    if not u.is_admin:
+        update.message.reply_text(
+            text=reports_no_access,
+        )
+    else:
+        if update.message.text == broadcast_command:
+            # user typed only command without text for the message.
+            update.message.reply_text(
+                text=reports_wrong_format,
+                parse_mode=telegram.ParseMode.HTML,
+            )
+            return
+
+        text = f"{update.message.text.replace(f'{broadcast_command} ', '')}"
+        # Логика разбора параметров
+        
+        update.message.reply_text(
+            text=text,
+            parse_mode=telegram.ParseMode.HTML,
+        )
 
 def broadcast_command_with_message(update: Update, context: CallbackContext):
     """ Type /broadcast <some_text>. Then check your message in HTML format and broadcast to users."""

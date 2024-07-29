@@ -27,25 +27,59 @@ GITLAB_LABELS = os.getenv('GITLAB_LABELS')
 
 def command_daily(update: Update, context: CallbackContext) -> None:
     u = User.get_user(update, context)
-    curday = str(datetime.today().strftime("%Y-%m-%d"))
     if not u.is_admin:
         update.message.reply_text(static_text.only_for_admins)
         return
     update.message.reply_text(
-        get_daily(curday=curday,label="Рейтинг",mode="noname"),
+        get_report(fromDate=datetime.today().date(),label="Табель",mode="name"),
         parse_mode=ParseMode.HTML,
         disable_web_page_preview=True,
     )
 
+def command_daily_rating_noname(update: Update, context: CallbackContext) -> None:
+    u = User.get_user(update, context)
+    if not u.is_admin:
+        update.message.reply_text(static_text.only_for_admins)
+        return
+    update.message.reply_text(
+        get_report(fromDate=datetime.today().date(),label="Табель,Рейтинг",mode="noname"),
+        parse_mode=ParseMode.HTML,
+        disable_web_page_preview=True,
+    )
 
+def command_daily_rating(update: Update, context: CallbackContext) -> None:
+    u = User.get_user(update, context)
+    if not u.is_admin:
+        update.message.reply_text(static_text.only_for_admins)
+        return
+    update.message.reply_text(
+        get_report(fromDate=datetime.today().date(),label="Табель,Рейтинг",mode="name"),
+        parse_mode=ParseMode.HTML,
+        disable_web_page_preview=True,
+    )
 
-def tz_to_moscow(date_time: str) -> str:
+def command_weekly_rating(update: Update, context: CallbackContext) -> None:
+    u = User.get_user(update, context)
+    
+    _fromDate = datetime.now() + timedelta(days=-7)
+    fromDate=_fromDate.date()
+    toDate = datetime.today().date()
+    if not u.is_admin:
+        update.message.reply_text(static_text.only_for_admins)
+        return
+    update.message.reply_text(
+        get_report(fromDate=fromDate,toDate=toDate,label="Табель,Рейтинг",mode="name"),
+        parse_mode=ParseMode.HTML,
+        disable_web_page_preview=True,
+    )
+
+def tz_to_moscow(date_time: str) -> datetime:
     dt = datetime.strptime(date_time, '%Y-%m-%dT%H:%M:%SZ')
     moscow_tz = pytz.timezone('Europe/Moscow')
     dt_utc = dt.replace(tzinfo=pytz.UTC)
     dt_moscow = dt_utc.astimezone(moscow_tz)
-    output_string = dt_moscow.strftime('%Y-%m-%d %H:%M:%S %Z%z')
-    return output_string
+    #output_string = dt_moscow.strftime('%Y-%m-%d %H:%M:%S %Z%z')
+    return dt_moscow.date()
 
 def get_issues(url: str,
                     labels: str = 'Табель',
@@ -165,14 +199,12 @@ def get_issues_id(url: str = GITLAB_URL, labels: str = GITLAB_LABELS, scope: str
   else:
     return errno, answer
 
-def get_tracking_issue(id_issue: int = None, curday: str='', today: str='', mode: str='name') -> tuple[int, Any, str]:
+def get_report_issue(id_issue: int = None, fromDate: datetime="", toDate: datetime="", mode: str='name') -> tuple[int, Any, str]:
   '''
   Получение отчета прикрепленного к конкретному issue
   :param id_issue: id обсуждения
   :return: список содержащий информацию для отчета по обсуждению
   '''
-  if today=='':
-     today=curday
   errno, answer = post_issue(number_issue=id_issue)
   #print("===",id_issue,answer)
   if errno == "code.CODE_GITLAB_GET_ISSUE_TRACKING_OK":
@@ -189,13 +221,12 @@ def get_tracking_issue(id_issue: int = None, curday: str='', today: str='', mode
           #answer_item['id_tracking_log'] = validate_int_is_none(get_last_for_split(item.get('id')))
           answer_item['note'] = item.get('note')
           answer_item['spent_at'] = tz_to_moscow(item.get('spentAt'))
-
-          ggggmmdd=answer_item['spent_at'].split(" ")[0]
-          #print("---",ggggmmdd,curday,answer_item['spent_at'],str(item.get('summary')))
-          if ggggmmdd==curday:
+          #ggggmmdd=answer_item['spent_at'].split(" ")[0]
+          print("---",answer_item['spent_at'],str(item.get('summary')))
+          if answer_item['spent_at']>=fromDate and (answer_item['spent_at']<=toDate):
             userfio=''
             if mode=="name":
-                userfio=f'<b>{answer_item["name"]}</b> {ggggmmdd}{static_text.BR}'
+                userfio=f'<b>{answer_item["name"]}</b> {answer_item["spent_at"].strftime("%Y-%m-%d")}{static_text.BR}'
             summ += f"{userfio} {item.get('summary')}{static_text.BR+static_text.BR}"
           answer_list.append(answer_item)
         return errno, answer_list, summ
@@ -224,14 +255,21 @@ def admin_old(update: Update, context: CallbackContext) -> None:
         return
     update.message.reply_text(static_text.secret_admin_commands)
 
-def get_daily(label: str = "Табель", curday: str='', mode: str='name'):
+def get_report(label: str = "Табель", fromDate: datetime="", toDate: datetime="", mode: str='name'):
+    
+    if toDate=='':
+       toDate=fromDate
+    if toDate==fromDate:
+      _date=f'за {fromDate}'
+    else:
+      _date=f'с {fromDate} по {toDate}'
     errno, answer = get_issues_id(GITLAB_URL,label)
-    print('---',errno, answer)
-    summ=f"{label}{static_text.BR}<b>Выполненные мероприятия за {curday}</b>{static_text.BR+static_text.BR}"
+    #print('---',errno, answer)
+    summ=f"{label}{static_text.BR}<b>Выполненные мероприятия за {_date}</b>{static_text.BR+static_text.BR}"
     sum=summ
     if errno == "code.CODE_GITLAB_GET_ISSUE_OK":
         for item in answer:
-            errno, answer, _summ = get_tracking_issue(id_issue=item, curday=curday, mode=mode)
+            errno, answer, _summ = get_report_issue(id_issue=item, fromDate=fromDate, toDate=toDate, mode=mode)
             summ=summ+_summ
         if summ==sum:
            summ=summ+' не найдено'

@@ -9,7 +9,7 @@ from telegram.ext import (
 
 from dtb.settings import DEBUG
 from tgbot.handlers.broadcast_message.manage_data import CONFIRM_DECLINE_BROADCAST
-from tgbot.handlers.broadcast_message.static_text import broadcast_command
+from tgbot.handlers.broadcast_message.static_text import broadcast_command,reports_command
 from tgbot.handlers.onboarding.manage_data import SECRET_LEVEL_BUTTON
 
 from tgbot.handlers.utils import files, error
@@ -29,6 +29,9 @@ def setup_dispatcher(dp):
     dp.add_handler(CommandHandler("start", onboarding_handlers.command_start))
     dp.add_handler(CommandHandler("help", onboarding_handlers.command_help)) 
     dp.add_handler(CommandHandler("daily", reports_gitlab.command_daily)) 
+    dp.add_handler(CommandHandler("daily_rating_noname", reports_gitlab.command_daily_rating_noname)) 
+    dp.add_handler(CommandHandler("daily_rating", reports_gitlab.command_daily_rating)) 
+    dp.add_handler(CommandHandler("weekly_rating", reports_gitlab.command_weekly_rating)) 
 
     # admin commands
     dp.add_handler(CommandHandler("admin", admin_handlers.admin))
@@ -41,7 +44,12 @@ def setup_dispatcher(dp):
 
     # secret level
     dp.add_handler(CallbackQueryHandler(onboarding_handlers.secret_level, pattern=f"^{SECRET_LEVEL_BUTTON}"))
-
+    
+    # reports
+    dp.add_handler(
+        MessageHandler(Filters.regex(rf'^{reports_command}(/s)?.*'), broadcast_handlers.reports)
+    )
+    
     # broadcast message
     dp.add_handler(
         MessageHandler(Filters.regex(rf'^{broadcast_command}(/s)?.*'), broadcast_handlers.broadcast_command_with_message)
