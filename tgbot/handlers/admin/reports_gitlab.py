@@ -31,7 +31,7 @@ def command_daily(update: Update, context: CallbackContext) -> None:
         update.message.reply_text(static_text.only_for_admins)
         return
     update.message.reply_text(
-        get_report(fromDate=datetime.today().date(),label="Табель",mode="name"),
+        text=get_report(fromDate=datetime.today().date(),label="Табель",mode="name"),
         parse_mode=ParseMode.HTML,
         disable_web_page_preview=True,
     )
@@ -42,7 +42,7 @@ def command_daily_rating_noname(update: Update, context: CallbackContext) -> Non
         update.message.reply_text(static_text.only_for_admins)
         return
     update.message.reply_text(
-        get_report(fromDate=datetime.today().date(),label="Табель,Рейтинг",mode="noname"),
+        text=get_report(fromDate=datetime.today().date(),label="Табель,Рейтинг",mode="noname"),
         parse_mode=ParseMode.HTML,
         disable_web_page_preview=True,
     )
@@ -53,7 +53,7 @@ def command_daily_rating(update: Update, context: CallbackContext) -> None:
         update.message.reply_text(static_text.only_for_admins)
         return
     update.message.reply_text(
-        get_report(fromDate=datetime.today().date(),label="Табель,Рейтинг",mode="name"),
+        text=get_report(fromDate=datetime.today().date(),label="Табель,Рейтинг",mode="name"),
         parse_mode=ParseMode.HTML,
         disable_web_page_preview=True,
     )
@@ -67,8 +67,14 @@ def command_weekly_rating(update: Update, context: CallbackContext) -> None:
     if not u.is_admin:
         update.message.reply_text(static_text.only_for_admins)
         return
+    text=get_report(fromDate=fromDate,toDate=toDate,label="Табель,Рейтинг",mode="name")
+    print('--',text)
+    ot=0 #!!!!!!!!!!
+    po=4000
+    do=po
+    
     update.message.reply_text(
-        get_report(fromDate=fromDate,toDate=toDate,label="Табель,Рейтинг",mode="name"),
+        text=text,
         parse_mode=ParseMode.HTML,
         disable_web_page_preview=True,
     )
@@ -95,7 +101,7 @@ def get_issues(url: str,
         'PRIVATE-TOKEN': ACCESS_TOKEN,
         'Accept': 'application/json;odata=verbose'
         }
-    print('---',_url,headers)
+    #print('---',_url,headers)
     responce = requests.get(_url,verify=False,headers=headers)
     response_list=responce.json()
     for it in response_list:
@@ -206,7 +212,7 @@ def get_report_issue(id_issue: int = None, fromDate: datetime="", toDate: dateti
   :return: список содержащий информацию для отчета по обсуждению
   '''
   errno, answer = post_issue(number_issue=id_issue)
-  #print("===",id_issue,answer)
+  #if id_issue==721:print("===",id_issue,answer)
   if errno == "code.CODE_GITLAB_GET_ISSUE_TRACKING_OK":
     if answer.get('data') is not None:
       if answer.get('data').get('issuable') is not None:
@@ -218,15 +224,17 @@ def get_report_issue(id_issue: int = None, fromDate: datetime="", toDate: dateti
         for item in answer.get('data').get('issuable').get('timelogs').get('nodes'):
           answer_item['name'] = item.get('user').get('name')
           answer_item['summary'] = str(item.get('summary'))
-          #answer_item['id_tracking_log'] = validate_int_is_none(get_last_for_split(item.get('id')))
           answer_item['note'] = item.get('note')
-          answer_item['spent_at'] = tz_to_moscow(item.get('spentAt'))
-          #ggggmmdd=answer_item['spent_at'].split(" ")[0]
-          print("---",answer_item['spent_at'],str(item.get('summary')))
+          _spentAt=item.get('spentAt')
+          if 'T20:00:00Z' in _spentAt:
+             _spentAt = _spentAt.replace('T20:00:00Z','T21:00:00Z') #!!!!!
+          answer_item['spent_at'] = tz_to_moscow(_spentAt)
+          #if id_issue==721:            print("---",answer_item['name'],answer_item['spent_at'],str(item.get('summary')))
           if answer_item['spent_at']>=fromDate and (answer_item['spent_at']<=toDate):
+            #if id_issue==721:              print("------",answer_item['spent_at'],str(item.get('summary')))
             userfio=''
             if mode=="name":
-                userfio=f'<b>{answer_item["name"]}</b> {answer_item["spent_at"].strftime("%Y-%m-%d")}{static_text.BR}'
+                userfio=f'{answer_item["name"]} {answer_item["spent_at"].strftime("%Y-%m-%d")}{static_text.BR}'
             summ += f"{userfio} {item.get('summary')}{static_text.BR+static_text.BR}"
           answer_list.append(answer_item)
         return errno, answer_list, summ
@@ -265,7 +273,7 @@ def get_report(label: str = "Табель", fromDate: datetime="", toDate: datet
       _date=f'с {fromDate} по {toDate}'
     errno, answer = get_issues_id(GITLAB_URL,label)
     #print('---',errno, answer)
-    summ=f"{label}{static_text.BR}<b>Выполненные мероприятия за {_date}</b>{static_text.BR+static_text.BR}"
+    summ=f"{label}{static_text.BR}<b>Выполненные мероприятия {_date}</b>{static_text.BR+static_text.BR}"
     sum=summ
     if errno == "code.CODE_GITLAB_GET_ISSUE_OK":
         for item in answer:
