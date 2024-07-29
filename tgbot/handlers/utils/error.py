@@ -24,12 +24,7 @@ def send_stacktrace_to_tg_chat(update: Update, context: CallbackContext) -> None
         f'An exception was raised while handling an update\n'
         f'<pre>{html.escape(tb_string)}</pre>'
     )
-    user_message_en = """
-😔 Something broke inside the bot.
-It is because we are constantly improving our service but sometimes we might forget to test some basic stuff.
-We already received all the details to fix the issue.
-Return to /start
-"""
+
     user_message = """
 😔 Что-то сломалось внутри бота.
 Это потому, что мы постоянно совершенствуем наш сервис, но иногда можем забыть протестировать некоторые базовые вещи.

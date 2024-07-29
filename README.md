@@ -52,13 +52,13 @@ git clone https://github.com/ohld/django-telegram-bot
 cd django-telegram-bot
 ```
 
-Create virtual environment (optional) for Linux
+Create virtual environment (optional)
 ``` bash
 python3 -m venv env
 source env/bin/activate
 ```
 
-Create virtual environment (optional) for Windows
+Create virtual environment for Windows
 ``` bash
 python -m venv env
 source env/Scripts/activate

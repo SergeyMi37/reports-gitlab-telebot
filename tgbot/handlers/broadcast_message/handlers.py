@@ -7,42 +7,11 @@ from telegram.ext import CallbackContext
 from dtb.settings import DEBUG
 from .manage_data import CONFIRM_DECLINE_BROADCAST, CONFIRM_BROADCAST
 from .keyboards import keyboard_confirm_decline_broadcasting
-from .static_text import broadcast_command,report_command, broadcast_wrong_format, broadcast_no_access, error_with_html, \
+from .static_text import broadcast_command, broadcast_wrong_format, broadcast_no_access, error_with_html, \
     message_is_sent, declined_message_broadcasting
 from users.models import User
 from users.tasks import broadcast_message
 
-
-def report_command_with_message(update: Update, context: CallbackContext):
-    """ Type /report ."""
-    u = User.get_user(update, context)
-
-    if not u.is_admin:
-        update.message.reply_text(
-            text=broadcast_no_access,
-        )
-    else:
-        #print('===',update )
-        if update.message.text == report_command:
-            # user typed only command without text for the message.
-            update.message.reply_text(
-                text='Нужно ввести ключевые инструкции для отчета',
-                parse_mode=telegram.ParseMode.HTML,
-            )
-            return
-
-        keytext = f"{update.message.text.replace(f'{report_command} ', '')}"
-        
-        try:
-            update.message.reply_text(
-                text=keytext,
-                parse_mode=telegram.ParseMode.HTML,
-            )
-        except telegram.error.BadRequest as e:
-            update.message.reply_text(
-                text=error_with_html.format(reason=e),
-                parse_mode=telegram.ParseMode.HTML,
-            )
 
 def broadcast_command_with_message(update: Update, context: CallbackContext):
     """ Type /broadcast <some_text>. Then check your message in HTML format and broadcast to users."""

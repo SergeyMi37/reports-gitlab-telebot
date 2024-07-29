@@ -1,5 +1,4 @@
 broadcast_command = '/broadcast'
-report_command = '/report'
 broadcast_no_access = "Sorry, you don't have access to this function."
 broadcast_wrong_format = f'To send message to all your users,' \
                          f' type {broadcast_command} command with text separated by space.\n' \

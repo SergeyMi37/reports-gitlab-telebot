@@ -1,5 +1,4 @@
-#import datetime
-from datetime import datetime, timedelta
+import datetime
 
 from django.utils import timezone
 from telegram import ParseMode, Update
@@ -9,10 +8,6 @@ from tgbot.handlers.onboarding import static_text
 from tgbot.handlers.utils.info import extract_user_data_from_update
 from users.models import User
 from tgbot.handlers.onboarding.keyboards import make_keyboard_for_start_command
-
-from tgbot.handlers.admin.handlers import get_daily
-from tgbot.system_commands import set_up_commands
-from tgbot.main import bot
 BR = chr(13)+chr(10)
 
 def command_help(update: Update, context: CallbackContext) -> None:
@@ -22,8 +17,7 @@ def command_help(update: Update, context: CallbackContext) -> None:
         text = static_text.start_created.format(first_name=u.first_name)
     else:
         text = static_text.start_not_created.format(first_name=u.first_name)
-    text += BR+'/start: Табельные кнопки 🚀'
-    text += BR+'/stats: Отчет за ЛРПО ежедневный по меткам "Табель" 📊'
+    text += BR+'/daily: Отчет за ЛРПО ежедневный по меткам "Табель" 📊'
     text += BR+'/daily_rating: Отчет ежедневный по меткам "Табель,Рейтинг" 📊'
     text += BR+'/daily_rating_noname: Отчет ежедневный по меткам "Табель,Рейтинг" обезличенный 📊'
     text += BR+'/weekly_rating: Отчет еженедельный по меткам "Табель,Рейтинг" 📊'
@@ -37,7 +31,6 @@ def command_help(update: Update, context: CallbackContext) -> None:
         text=text,
         parse_mode=ParseMode.HTML
     )
-   
 
 def command_start(update: Update, context: CallbackContext) -> None:
     u, created = User.get_user_and_created(update, context)
@@ -50,28 +43,15 @@ def command_start(update: Update, context: CallbackContext) -> None:
     update.message.reply_text(text=text,
                               reply_markup=make_keyboard_for_start_command())
 
-#
-def secret_level_yesterday_rating(update: Update, context: CallbackContext) -> None:
-    # callback_data: SECRET_LEVEL_BUTTON variable from manage_data.py
-    """ Pressed 'secret_level_button_text' after /start command"""
-    user_id = extract_user_data_from_update(update)['user_id']
-    yesterday = datetime.now() + timedelta(days=-1)
-    #print(yesterday)
-    _day = str(yesterday.strftime("%Y-%m-%d"))
-    text= get_daily(curday=_day,label="Рейтинг")
-    context.bot.edit_message_text(
-        text=text,
-        chat_id=user_id,
-        message_id=update.callback_query.message.message_id,
-        parse_mode=ParseMode.HTML
-    )
 
 def secret_level(update: Update, context: CallbackContext) -> None:
     # callback_data: SECRET_LEVEL_BUTTON variable from manage_data.py
     """ Pressed 'secret_level_button_text' after /start command"""
     user_id = extract_user_data_from_update(update)['user_id']
-    curday = str(datetime.today().strftime("%Y-%m-%d"))
-    text= get_daily(curday=curday,label="Рейтинг")
+    text = static_text.unlock_secret_room.format(
+        user_count=User.objects.count(),
+        active_24=User.objects.filter(updated_at__gte=timezone.now() - datetime.timedelta(hours=24)).count()
+    )
 
     context.bot.edit_message_text(
         text=text,
