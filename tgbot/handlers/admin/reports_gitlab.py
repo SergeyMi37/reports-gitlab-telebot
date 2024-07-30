@@ -7,19 +7,21 @@ from telegram.ext import CallbackContext
 from tgbot.handlers.admin import static_text
 from tgbot.handlers.admin.utils import _get_csv_from_qs_values
 from tgbot.handlers.utils.decorators import admin_only, send_typing_action
+from tgbot.handlers.utils.date_utils import tz_to_moscow
 from users.models import User
 
 import os
 from typing import Any
 #import datetime
 from datetime import datetime, timedelta
-import pytz
+
 import requests
 import json
 from tgbot.handlers.admin import static_text
 
 CERT_FILE = os.getenv('CERT_FILE')
 CERT_KEY_FILE = os.getenv('CERT_KEY_FILE')
+
 ACCESS_TOKEN = os.getenv('ACCESS_TOKEN')
 GRAPHQL_URL = os.getenv('GRAPHQL_URL')
 GITLAB_URL = os.getenv('GITLAB_URL')
@@ -68,24 +70,17 @@ def command_weekly_rating(update: Update, context: CallbackContext) -> None:
         update.message.reply_text(static_text.only_for_admins)
         return
     text=get_report(fromDate=fromDate,toDate=toDate,label="Табель,Рейтинг",mode="name")
+    '''
     print('--',text)
     ot=0 #!!!!!!!!!!
     po=4000
     do=po
-    
+    '''
     update.message.reply_text(
         text=text,
         parse_mode=ParseMode.HTML,
         disable_web_page_preview=True,
     )
-
-def tz_to_moscow(date_time: str) -> datetime:
-    dt = datetime.strptime(date_time, '%Y-%m-%dT%H:%M:%SZ')
-    moscow_tz = pytz.timezone('Europe/Moscow')
-    dt_utc = dt.replace(tzinfo=pytz.UTC)
-    dt_moscow = dt_utc.astimezone(moscow_tz)
-    #output_string = dt_moscow.strftime('%Y-%m-%d %H:%M:%S %Z%z')
-    return dt_moscow.date()
 
 def get_issues(url: str,
                     labels: str = 'Табель',

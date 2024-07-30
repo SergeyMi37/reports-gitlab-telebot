@@ -8,7 +8,9 @@ from tgbot.handlers.onboarding import static_text
 from tgbot.handlers.utils.info import extract_user_data_from_update
 from users.models import User
 from tgbot.handlers.onboarding.keyboards import make_keyboard_for_start_command
-BR = chr(13)+chr(10)
+from tgbot.handlers.admin.static_text import BR
+
+from tgbot.handlers.broadcast_message.static_text import reports_wrong_format
 
 def command_help(update: Update, context: CallbackContext) -> None:
     u, created = User.get_user_and_created(update, context)
@@ -21,8 +23,7 @@ def command_help(update: Update, context: CallbackContext) -> None:
     text += BR+'/daily_rating: Отчет ежедневный по меткам "Табель,Рейтинг" 📊'
     text += BR+'/daily_rating_noname: Отчет ежедневный по меткам "Табель,Рейтинг" обезличенный 📊'
     text += BR+'/weekly_rating: Отчет еженедельный по меткам "Табель,Рейтинг" 📊'
-    text += BR+'/report type:daily is:rating date:2024-07-26 period:2024-07-22;2024-07-26  - Заказать отчет по ключевым параметрам 📨'
-    #text += BR+'/broadcast: Отправить сообщение 📨'
+    text += BR + reports_wrong_format
     #text += BR+'/ask_location: Отправить локацию 📍'
     #text += BR+'/export_users: Экспорт users.csv 👥'
     text += BR+'/help: Перечень команд'

@@ -11,11 +11,12 @@ from .static_text import broadcast_command, broadcast_wrong_format, broadcast_no
     message_is_sent, declined_message_broadcasting,reports_command, reports_no_access, reports_wrong_format
 from users.models import User
 from users.tasks import broadcast_message
+from datetime import datetime, timedelta
+from tgbot.handlers.admin.reports_gitlab import get_report
 
 def reports(update: Update, context: CallbackContext):
     """ Reports."""
     u = User.get_user(update, context)
-
     if not u.is_admin:
         update.message.reply_text(
             text=reports_no_access,
@@ -29,11 +30,27 @@ def reports(update: Update, context: CallbackContext):
             )
             return
 
-        text = f"{update.message.text.replace(f'{reports_command} ', '')}"
+        params = f"{update.message.text.replace(f'{reports_command} ', '')}"
         # Логика разбора параметров
-        
+        mode="name"
+        label="Табель,Рейтинг"
+        if 'date:yesterday' in params:
+            _fromDate = datetime.now() + timedelta(days=-1)
+            fromDate=_fromDate.date()
+            toDate=fromDate
+        if 'date:today' in params:
+            fromDate = datetime.today().date()
+            toDate=fromDate
+        if 'date:weekly' in params:
+            _fromDate = datetime.now() + timedelta(days=-7)
+            fromDate=_fromDate.date()
+            toDate = datetime.today().date()
+        if 'mode:noname' in params:
+            mode="noname"
+
+        report = get_report(fromDate=fromDate,toDate=toDate,label=label,mode=mode)
         update.message.reply_text(
-            text=text,
+            text=report,
             parse_mode=telegram.ParseMode.HTML,
         )
 
