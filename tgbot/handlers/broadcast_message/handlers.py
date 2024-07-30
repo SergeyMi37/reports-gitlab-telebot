@@ -33,7 +33,7 @@ def reports(update: Update, context: CallbackContext):
         params = f"{update.message.text.replace(f'{reports_command} ', '')}"
         # Логика разбора параметров
         mode="name"
-        label="Табель,Рейтинг"
+        labels="Табель"
         if 'date:yesterday' in params:
             _fromDate = datetime.now() + timedelta(days=-1)
             fromDate=_fromDate.date()
@@ -47,8 +47,16 @@ def reports(update: Update, context: CallbackContext):
             toDate = datetime.today().date()
         if 'mode:noname' in params:
             mode="noname"
+        if 'labels:' in params:
+            labels = params.split('labels:')[1]
+        if 'date:20' in params:
+            _fromDate = f"{params} ".split('date:')[1].split(" ")[0].split(":")[0]
+            fromDate = datetime.strptime(_fromDate, '%Y-%m-%d')
+            _toDate = f"{params} ".split('date:')[1].split(" ")[0].split(":")[1]
+            toDate = datetime.strptime(_toDate, '%Y-%m-%d')
 
-        report = get_report(fromDate=fromDate,toDate=toDate,label=label,mode=mode)
+        print('---Reports-params:',fromDate,toDate,labels,mode)
+        report = get_report(fromDate=fromDate,toDate=toDate,label=labels,mode=mode)
         update.message.reply_text(
             text=report,
             parse_mode=telegram.ParseMode.HTML,

@@ -28,3 +28,13 @@ def _get_csv_from_qs_values(queryset: QuerySet[Dict], filename: str = 'users'):
     buf.name = f"{filename}__{datetime.now().strftime('%Y.%m.%d.%H.%M')}.csv"
 
     return buf
+
+def piece(value,  *args, **kwargs):
+    if not value: return ""
+    delimiter = kwargs['delimiter']
+    num = kwargs['num']
+    return value.split(delimiter)[num]  # $piece(a,"*",num)
+
+def iris_piece(value, delim, num):
+    if not value: return ""
+    return value.split(delim)[num]  # txt.split(" ")[1::])) # $piece(a," ",2,
