@@ -6,6 +6,12 @@ DATE_TEMPLATE = "%Y.%m.%d"
 DATETIME_MIN_LENGHT = 10
 
 def tz_to_moscow(date_time: str) -> datetime:
+    if 'T20:00:00Z' in date_time:
+      date_time = date_time.replace('T20:00:00Z','T21:00:00Z') # приведение к мск времени
+    if 'T17:00:00Z' in date_time:
+      date_time = date_time.replace('T17:00:00Z','T21:00:00Z')
+    if 'T18:00:00Z' in date_time:
+      date_time = date_time.replace('T18:00:00Z','T21:00:00Z')
     dt = datetime.strptime(date_time, '%Y-%m-%dT%H:%M:%SZ')
     moscow_tz = pytz.timezone('Europe/Moscow')
     dt_utc = dt.replace(tzinfo=pytz.UTC)

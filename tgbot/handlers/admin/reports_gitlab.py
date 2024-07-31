@@ -241,8 +241,6 @@ def get_report_issue(id_issue: int = None, fromDate: datetime="", toDate: dateti
           answer_item['summary'] = str(item.get('summary'))
           answer_item['note'] = item.get('note')
           _spentAt=item.get('spentAt')
-          if 'T20:00:00Z' in _spentAt:
-             _spentAt = _spentAt.replace('T20:00:00Z','T21:00:00Z') # приведение к мск времени
           answer_item['spent_at'] = tz_to_moscow(_spentAt)
           #if id_issue==721:            print("---",answer_item['name'],answer_item['spent_at'],str(item.get('summary')))
           if answer_item['spent_at']>=fromDate and (answer_item['spent_at']<=toDate):
