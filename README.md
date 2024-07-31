@@ -24,7 +24,7 @@ Install all requirements:
 pip install -r requirements.txt
 ```
 
-Create `.env` file in root directory and copy-paste this or just run `cp .env_example .env`,
+Create `.env` file in root directory and copy-paste this or just run `cp env_example .env`,
 don't forget to change telegram token:
 ``` bash 
 DJANGO_DEBUG=True
