@@ -27,12 +27,20 @@ GRAPHQL_URL = os.getenv('GRAPHQL_URL')
 GITLAB_URL = os.getenv('GITLAB_URL')
 GITLAB_LABELS = os.getenv('GITLAB_LABELS')
 
-def command_daily(update: Update, context: CallbackContext) -> None:
+def command_yesterday(update: Update, context: CallbackContext) -> None:
+  _fromDate = datetime.now() + timedelta(days=-1)
+  fromDate=_fromDate.date()
+  command_daily(update, context, reportDate = fromDate )
+
+def command_daily(update: Update, context: CallbackContext, reportDate = '' ) -> None:
     u = User.get_user(update, context)
     if not u.is_admin:
         update.message.reply_text(static_text.only_for_admins)
         return
-    fromDate=datetime.today().date()
+    if reportDate:
+      reportDate = fromDate
+    else:
+       fromDate=datetime.today().date()
     labels="Табель"
     forcopy=f"<pre>/reports date:{fromDate}:{fromDate} labels:{labels}</pre>"
     update.message.reply_text(

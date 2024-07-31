@@ -32,7 +32,7 @@ def setup_dispatcher(dp):
     dp.add_handler(CommandHandler("daily_rating_noname", reports_gitlab.command_daily_rating_noname)) 
     dp.add_handler(CommandHandler("daily_rating", reports_gitlab.command_daily_rating)) 
     dp.add_handler(CommandHandler("weekly_rating", reports_gitlab.command_weekly_rating)) 
-
+    dp.add_handler(CommandHandler("yesterday", reports_gitlab.command_yesterday)) 
     # admin commands
     dp.add_handler(CommandHandler("admin", admin_handlers.admin))
     dp.add_handler(CommandHandler("stats", admin_handlers.stats))
