@@ -2,7 +2,7 @@ reports_command = '/reports'
 reports_no_access = "Извините, у вас нет доступа к этой функции."
 reports_wrong_format = f'{reports_command} После ключевого слова через пробел нужно ввести параметры отчета.\n' \
                         f'Например\n' \
-                        f'/reports date:today mode:noname labels:Табель\n' \
+                        f'<pre>/reports date:today mode:noname labels:Табель</pre>\n' \
                         f'  date:yesterday - отчет за вчера\n' \
                         f'  date:today - отчет за сегодня\n' \
                         f'  date:weekly - отчет за неделю\n' \

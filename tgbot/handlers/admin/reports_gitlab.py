@@ -32,8 +32,11 @@ def command_daily(update: Update, context: CallbackContext) -> None:
     if not u.is_admin:
         update.message.reply_text(static_text.only_for_admins)
         return
+    fromDate=datetime.today().date()
+    labels="Табель"
+    forcopy=f"<pre>/reports date:{fromDate}:{fromDate} labels:{labels}</pre>"
     update.message.reply_text(
-        text=get_report(fromDate=datetime.today().date(),label="Табель",mode="name"),
+        text=forcopy+get_report(fromDate=fromDate,label=labels),
         parse_mode=ParseMode.HTML,
         disable_web_page_preview=True,
     )
@@ -58,8 +61,11 @@ def command_daily_rating(update: Update, context: CallbackContext) -> None:
     if not u.is_admin:
         update.message.reply_text(static_text.only_for_admins)
         return
+    fromDate=datetime.today().date()
+    labels="Табель,Рейтинг"
+    forcopy=f"<pre>/reports date:{fromDate}:{fromDate} labels:{labels}</pre>"
     update.message.reply_text(
-        text=get_report(fromDate=datetime.today().date(),label="Табель,Рейтинг",mode="name"),
+        text=forcopy+get_report(fromDate=fromDate,label=labels),
         parse_mode=ParseMode.HTML,
         disable_web_page_preview=True,
     )
@@ -73,7 +79,9 @@ def command_weekly_rating(update: Update, context: CallbackContext) -> None:
     if not u.is_admin:
         update.message.reply_text(static_text.only_for_admins)
         return
-    text=get_report(fromDate=fromDate,toDate=toDate,label="Табель,Рейтинг",mode="name")
+    labels="Табель,Рейтинг"
+    forcopy=f"<pre>/reports date:{fromDate}:{toDate} labels:{labels}</pre>"
+    text=forcopy + get_report(fromDate=fromDate,toDate=toDate,label=labels)
     '''
     print('--',text)
     ot=0 #!!!!!!!!!!

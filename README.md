@@ -1,5 +1,5 @@
 
-# Получение отчетов по задачам и метккм GitLab
+# Получение отчетов по задачам и меткам из GitLab
 
 ``` bash
 git clone https://github.com/SergeyMi37/reports-gitlab-telebot.git
@@ -30,6 +30,12 @@ don't forget to change telegram token:
 DJANGO_DEBUG=True
 DATABASE_URL=sqlite:///db.sqlite3
 TELEGRAM_TOKEN=<PASTE YOUR TELEGRAM TOKEN HERE>
+
+# gitlab.com
+ACCESS_TOKEN = 'glpat-testJmFxugJmHAZQ43sP'
+GRAPHQL_URL = 'https://gitlab.com/api/graphql'
+GITLAB_URL = 'https://gitlab.com/api/v4/projects/2344904121/issues'
+GITLAB_LABELS = 'Теst'
 ```
 
 Run migrations to setup SQLite database:
