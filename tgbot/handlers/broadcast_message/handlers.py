@@ -51,12 +51,12 @@ def reports(update: Update, context: CallbackContext):
             labels = params.split('labels:')[1]
         if 'date:20' in params:
             _fromDate = f"{params} ".split('date:')[1].split(" ")[0].split(":")[0]
-            fromDate = datetime.strptime(_fromDate, '%Y-%m-%d')
+            fromDate = datetime.strptime(_fromDate, "%Y-%m-%d").date()
             _toDate = f"{params} ".split('date:')[1].split(" ")[0].split(":")[1]
-            toDate = datetime.strptime(_toDate, '%Y-%m-%d')
-
+            toDate = datetime.strptime(_toDate,  "%Y-%m-%d").date()
+        forcopy=f"<pre>/reports date:{fromDate}:{toDate} mode:{mode} labels:{labels}</pre>"
         print('---Reports-params:',fromDate,toDate,labels,mode)
-        report = get_report(fromDate=fromDate,toDate=toDate,label=labels,mode=mode)
+        report = forcopy+get_report(fromDate=fromDate,toDate=toDate,label=labels,mode=mode)
         update.message.reply_text(
             text=report,
             parse_mode=telegram.ParseMode.HTML,

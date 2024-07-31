@@ -2,12 +2,13 @@ reports_command = '/reports'
 reports_no_access = "Извините, у вас нет доступа к этой функции."
 reports_wrong_format = f'{reports_command} После ключевого слова через пробел нужно ввести параметры отчета.\n' \
                         f'Например\n' \
-                        f'/reports date:today mode:noname labels:Табель,Михайленко С.В.\n' \
+                        f'/reports date:today mode:noname labels:Табель\n' \
                         f'  date:yesterday - отчет за вчера\n' \
                         f'  date:today - отчет за сегодня\n' \
                         f'  date:weekly - отчет за неделю\n' \
                         f'  date:гггг-мм-дд:гггг-мм-дд - отчет за конкретный период\n' \
-                        f'  mode:name - включяать в отчет ФИО и дату' 
+                        f'  mode:name - включяать в отчет ФИО и дату\n' \
+                        f'  labels:Табель,Рейтинг,Михайленко С.В.\n'
 broadcast_command = '/broadcast'
 broadcast_no_access = "Sorry, you don't have access to this function."
 broadcast_wrong_format = f'To send message to all your users,' \

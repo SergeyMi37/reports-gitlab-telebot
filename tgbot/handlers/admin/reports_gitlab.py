@@ -43,8 +43,12 @@ def command_daily_rating_noname(update: Update, context: CallbackContext) -> Non
     if not u.is_admin:
         update.message.reply_text(static_text.only_for_admins)
         return
+    fromDate=datetime.today().date()
+    labels="Табель,Рейтинг"
+    mode="noname"
+    forcopy=f"<pre>/reports date:{fromDate}:{fromDate} mode:{mode} labels:{labels}</pre>"
     update.message.reply_text(
-        text=get_report(fromDate=datetime.today().date(),label="Табель,Рейтинг",mode="noname"),
+        text=forcopy+get_report(fromDate=fromDate,label=labels,mode="noname"),
         parse_mode=ParseMode.HTML,
         disable_web_page_preview=True,
     )
