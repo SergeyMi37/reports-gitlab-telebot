@@ -19,6 +19,7 @@ def command_help(update: Update, context: CallbackContext) -> None:
         text = static_text.start_created.format(first_name=u.first_name)
     else:
         text = static_text.start_not_created.format(first_name=u.first_name)
+    text += BR+'/start: Кнопки ссылок на проект "Табель" 📊'
     text += BR+'/daily: Отчет за ЛРПО ежедневный по меткам "Табель" 📊'
     text += BR+'/yesterday: Отчет за ЛРПО вчерашний по меткам "Табель" 📊'
     text += BR+'/daily_rating: Отчет ежедневный по меткам "Табель,Рейтинг" 📊'

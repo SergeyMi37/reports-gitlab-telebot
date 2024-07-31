@@ -38,9 +38,9 @@ def command_daily(update: Update, context: CallbackContext, reportDate = '' ) ->
         update.message.reply_text(static_text.only_for_admins)
         return
     if reportDate:
-      reportDate = fromDate
+      fromDate = reportDate
     else:
-       fromDate=datetime.today().date()
+       fromDate = datetime.today().date()
     labels="Табель"
     forcopy=f"<pre>/reports date:{fromDate}:{fromDate} labels:{labels}</pre>"
     update.message.reply_text(
@@ -249,7 +249,7 @@ def get_report_issue(id_issue: int = None, fromDate: datetime="", toDate: dateti
             #if id_issue==721:              print("------",answer_item['spent_at'],str(item.get('summary')))
             userfio=''
             if mode=="name":
-                userfio=f'{answer_item["name"].split(" ")[0]} {answer_item["spent_at"].strftime("%Y-%m-%d")}{static_text.BR}'
+                userfio=f'{answer_item["name"].split(" ")[0]} {answer_item["spent_at"].strftime("%Y-%m-%d")} {item.get("spentAt")} {static_text.BR}'
             summ += f"{userfio} {item.get('summary')}{static_text.BR+static_text.BR}"
           answer_list.append(answer_item)
         return errno, answer_list, summ

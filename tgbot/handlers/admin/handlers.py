@@ -30,7 +30,6 @@ def stats(update: Update, context: CallbackContext) -> None:
         disable_web_page_preview=True,
     )
 
-
 @admin_only
 @send_typing_action
 def export_users(update: Update, context: CallbackContext) -> None:
