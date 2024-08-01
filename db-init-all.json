@@ -1,0 +1,692 @@
+[
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2024-07-31T16:54:19.309Z",
+    "user": 1,
+    "content_type": 13,
+    "object_id": "504026852",
+    "object_repr": "@SergeyMi37",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Is admin\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 2,
+  "fields": {
+    "action_time": "2024-07-31T19:29:38.009Z",
+    "user": 1,
+    "content_type": 13,
+    "object_id": "887115080",
+    "object_repr": "@gu_dm_al",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Is admin\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 3,
+  "fields": {
+    "action_time": "2024-08-01T15:36:58.894Z",
+    "user": 1,
+    "content_type": 13,
+    "object_id": "887115080",
+    "object_repr": "@gu_dm_al",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 4,
+  "fields": {
+    "action_time": "2024-08-01T15:37:09.978Z",
+    "user": 1,
+    "content_type": 13,
+    "object_id": "5830722797",
+    "object_repr": "@MswTele2",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Is blocked bot\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 5,
+  "fields": {
+    "action_time": "2024-08-01T15:37:15.644Z",
+    "user": 1,
+    "content_type": 13,
+    "object_id": "5360496138",
+    "object_repr": "@nwmber92",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Is admin\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 6,
+  "fields": {
+    "action_time": "2024-08-01T15:37:23.069Z",
+    "user": 1,
+    "content_type": 13,
+    "object_id": "856383956",
+    "object_repr": "@sntchweb",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Is admin\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 7,
+  "fields": {
+    "action_time": "2024-08-01T15:37:29.170Z",
+    "user": 1,
+    "content_type": 13,
+    "object_id": "856383956",
+    "object_repr": "@sntchweb",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 8,
+  "fields": {
+    "action_time": "2024-08-01T15:37:33.962Z",
+    "user": 1,
+    "content_type": 13,
+    "object_id": "1225379248",
+    "object_repr": "@dmitriy_sergeev10",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Is admin\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 9,
+  "fields": {
+    "action_time": "2024-08-01T16:54:00.821Z",
+    "user": 1,
+    "content_type": 13,
+    "object_id": "1235494841",
+    "object_repr": "@gra_nat_al",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Is admin\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 10,
+  "fields": {
+    "action_time": "2024-08-01T16:59:20.027Z",
+    "user": 1,
+    "content_type": 13,
+    "object_id": "1091562245",
+    "object_repr": "@cowboysadboy",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Is admin\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 11,
+  "fields": {
+    "action_time": "2024-08-01T17:06:08.316Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "2",
+    "object_repr": "5 13 * * * (m/h/dM/MY/d) UTC",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 12,
+  "fields": {
+    "action_time": "2024-08-01T17:06:18.200Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "2",
+    "object_repr": "Напоминание об ежедневке: 5 13 * * * (m/h/dM/MY/d) UTC",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 13,
+  "fields": {
+    "action_time": "2024-08-01T17:40:30.156Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "2",
+    "object_repr": "Напоминание об ежедневке: 5 13 * * * (m/h/dM/MY/d) UTC",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Positional Arguments\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 14,
+  "fields": {
+    "action_time": "2024-08-01T17:43:05.890Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "3",
+    "object_repr": "50 17 * * * (m/h/dM/MY/d) UTC",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 15,
+  "fields": {
+    "action_time": "2024-08-01T17:45:39.824Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "3",
+    "object_repr": "Тестирования на себе: 50 17 * * * (m/h/dM/MY/d) UTC",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 16,
+  "fields": {
+    "action_time": "2024-08-01T17:53:42.725Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "3",
+    "object_repr": "59 17 * * * (m/h/dM/MY/d) UTC",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Minute(s)\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 17,
+  "fields": {
+    "action_time": "2024-08-01T17:53:50.137Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "3",
+    "object_repr": "Тестирования на себе: 59 17 * * * (m/h/dM/MY/d) UTC",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Positional Arguments\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 18,
+  "fields": {
+    "action_time": "2024-08-01T17:55:07.651Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "3",
+    "object_repr": "Тестирования на себе: 59 17 * * * (m/h/dM/MY/d) UTC",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Positional Arguments\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 19,
+  "fields": {
+    "action_time": "2024-08-01T18:21:01.342Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "4",
+    "object_repr": "1 14 * * * (m/h/dM/MY/d) UTC",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 20,
+  "fields": {
+    "action_time": "2024-08-01T18:21:05.637Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "4",
+    "object_repr": "Сообщение Гусеву Д.А.: 1 14 * * * (m/h/dM/MY/d) UTC",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 21,
+  "fields": {
+    "action_time": "2024-08-01T18:22:40.455Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "2",
+    "object_repr": "Напоминание об ежедневке: 5 13 * * * (m/h/dM/MY/d) UTC",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Positional Arguments\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 22,
+  "fields": {
+    "action_time": "2024-08-01T19:19:50.257Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "3",
+    "object_repr": "9 17 * * 2 (m/h/dM/MY/d) UTC",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Minute(s)\", \"Day(s) Of The Week\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 23,
+  "fields": {
+    "action_time": "2024-08-01T19:20:12.644Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "3",
+    "object_repr": "Напомнить о бубликах и процентах: 9 17 * * 2 (m/h/dM/MY/d) UTC",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Name\", \"Start Datetime\", \"Positional Arguments\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 24,
+  "fields": {
+    "action_time": "2024-08-01T19:20:51.119Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "3",
+    "object_repr": "Напомнить в среду вечером о бубликах и процентах: 9 17 * * 2 (m/h/dM/MY/d) UTC",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Name\", \"Description\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 25,
+  "fields": {
+    "action_time": "2024-08-01T19:22:10.160Z",
+    "user": 1,
+    "content_type": 7,
+    "object_id": "3",
+    "object_repr": "9 17 * * 0,2 (m/h/dM/MY/d) UTC",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Day(s) Of The Week\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 26,
+  "fields": {
+    "action_time": "2024-08-01T19:22:15.717Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "3",
+    "object_repr": "Напомнить в среду вечером о бубликах и процентах: 9 17 * * 0,2 (m/h/dM/MY/d) UTC",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 27,
+  "fields": {
+    "action_time": "2024-08-01T19:26:44.187Z",
+    "user": 2,
+    "content_type": 13,
+    "object_id": "1235494841",
+    "object_repr": "@gra_nat_al",
+    "action_flag": 2,
+    "change_message": "[]"
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$260000$9ByhJi9ahNEdgXQdpdDeyt$Lq+r8S6vJXBHondR5xYpDWlOxGsPplxj1WoQcRg+148=",
+    "last_login": "2024-07-31T16:54:09.139Z",
+    "is_superuser": true,
+    "username": "gitlab",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2024-07-31T16:53:32.150Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$260000$lCyjXqpNLCoBg5YWFd9t5k$ONNvCQEX7WKxvvLDCdTl+LnSeMrgAvl2e+RxB8NGeHs=",
+    "last_login": "2024-08-01T19:26:12.972Z",
+    "is_superuser": true,
+    "username": "msw",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2024-08-01T19:26:03.303Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "7bu3j3i2iyjoykfa6fwt3oc828dkei2t",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hDGFjq4dN8zkBlgpGpoUtqV8e7apAvd_vfef6lA21rC1vISpqQuCtTpd2OKj1x3kO5Ub7OOc12XifWu6IM2Pc4pP6-H-3dQqJVvLb130hkexLkzkoCzg_E9IWAGZMdoCNgak7xkjJaSQKSUBcEwdU69P9k6ODI:1sZCaX:pRZKTJZ70H0h96aGzWWkrH9UfuyFC7aUVMox9X1n5Nw",
+    "expire_date": "2024-08-14T16:54:09.142Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "q1l9pkptt6atz5mux3gkw4pm2tx1zvs7",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2pB2WgZw6d4zkIEZpGpoUtqV8e7apAvd_vfef6lA21rC1mQJE6uzAnX63SKlh9Qd8J3qbdZprusyRb0r-qBNX2eW5-Vw_w4KtfKtMXIaxbic2XYpQ7SeGLxEnxOKiczODGCpQ0RnRsc0MBrsPfRAg4B6fwAR_zhG:1sZbRF:SdAgl9xczs61DWrU3lm5UXVf5BYPozsH0TMXkEVXEcQ",
+    "expire_date": "2024-08-15T19:26:13.179Z"
+  }
+},
+{
+  "model": "django_celery_beat.crontabschedule",
+  "pk": 1,
+  "fields": {
+    "minute": "0",
+    "hour": "4",
+    "day_of_month": "*",
+    "month_of_year": "*",
+    "day_of_week": "*",
+    "timezone": "UTC"
+  }
+},
+{
+  "model": "django_celery_beat.crontabschedule",
+  "pk": 2,
+  "fields": {
+    "minute": "5",
+    "hour": "13",
+    "day_of_month": "*",
+    "month_of_year": "*",
+    "day_of_week": "*",
+    "timezone": "UTC"
+  }
+},
+{
+  "model": "django_celery_beat.crontabschedule",
+  "pk": 3,
+  "fields": {
+    "minute": "9",
+    "hour": "17",
+    "day_of_month": "*",
+    "month_of_year": "*",
+    "day_of_week": "0,2",
+    "timezone": "UTC"
+  }
+},
+{
+  "model": "django_celery_beat.crontabschedule",
+  "pk": 4,
+  "fields": {
+    "minute": "1",
+    "hour": "14",
+    "day_of_month": "*",
+    "month_of_year": "*",
+    "day_of_week": "*",
+    "timezone": "UTC"
+  }
+},
+{
+  "model": "django_celery_beat.periodictasks",
+  "pk": 1,
+  "fields": {
+    "last_update": "2024-08-01T19:22:15.713Z"
+  }
+},
+{
+  "model": "django_celery_beat.periodictask",
+  "pk": 1,
+  "fields": {
+    "name": "celery.backend_cleanup",
+    "task": "celery.backend_cleanup",
+    "interval": null,
+    "crontab": 1,
+    "solar": null,
+    "clocked": null,
+    "args": "[]",
+    "kwargs": "{}",
+    "queue": null,
+    "exchange": null,
+    "routing_key": null,
+    "headers": "{}",
+    "priority": null,
+    "expires": null,
+    "expire_seconds": 43200,
+    "one_off": false,
+    "start_time": null,
+    "enabled": true,
+    "last_run_at": "2024-08-01T04:00:00.000Z",
+    "total_run_count": 1,
+    "date_changed": "2024-08-01T04:01:30.172Z",
+    "description": ""
+  }
+},
+{
+  "model": "django_celery_beat.periodictask",
+  "pk": 2,
+  "fields": {
+    "name": "Напоминание об ежедневке",
+    "task": "users.tasks.broadcast_message",
+    "interval": null,
+    "crontab": 2,
+    "solar": null,
+    "clocked": null,
+    "args": "[\r\n[\r\n1235494841,\r\n1225379248,\r\n856383956,\r\n5360496138,\r\n1091562245,\r\n504026852\r\n]\r\n,\"Сохраните в табеле ежедневный отчет ---  https://git.lab.nexus/ctz/lab/tabel/-/issues/?sort=updated_desc&state=opened&label_name%5B%5D=Рейтинг&first_page_size=20 --- И проверьте командой /daily-rating\"\r\n]",
+    "kwargs": "{}",
+    "queue": null,
+    "exchange": null,
+    "routing_key": null,
+    "headers": "{}",
+    "priority": null,
+    "expires": null,
+    "expire_seconds": null,
+    "one_off": false,
+    "start_time": "2024-08-01T17:04:49Z",
+    "enabled": true,
+    "last_run_at": null,
+    "total_run_count": 0,
+    "date_changed": "2024-08-01T18:22:40.453Z",
+    "description": "Напоминание об ежедневке"
+  }
+},
+{
+  "model": "django_celery_beat.periodictask",
+  "pk": 3,
+  "fields": {
+    "name": "Напомнить в среду вечером о бубликах и процентах",
+    "task": "users.tasks.broadcast_message",
+    "interval": null,
+    "crontab": 3,
+    "solar": null,
+    "clocked": null,
+    "args": "[\r\n[\r\n504026852\r\n]\r\n,\"Напомнить о бубликах и процентах. Сохраните в Результата прогресс процентов, из табеля получить ежеднедельный отчет по Рейтингу /weekly-rating\"\r\n]",
+    "kwargs": "{}",
+    "queue": null,
+    "exchange": null,
+    "routing_key": null,
+    "headers": "{}",
+    "priority": null,
+    "expires": null,
+    "expire_seconds": null,
+    "one_off": false,
+    "start_time": "2024-08-01T19:20:03Z",
+    "enabled": true,
+    "last_run_at": "2024-08-01T17:59:00.000Z",
+    "total_run_count": 2,
+    "date_changed": "2024-08-01T19:22:15.715Z",
+    "description": "Напомнить в среду вечером о бубликах и процентах"
+  }
+},
+{
+  "model": "django_celery_beat.periodictask",
+  "pk": 4,
+  "fields": {
+    "name": "Сообщение Гусеву Д.А.",
+    "task": "users.tasks.broadcast_message",
+    "interval": null,
+    "crontab": 4,
+    "solar": null,
+    "clocked": null,
+    "args": "[\r\n[\r\n887115080\r\n]\r\n,\"Посмотреть ежедневный отчет для Рейтинга /daily-rating-noname\"\r\n]",
+    "kwargs": "{}",
+    "queue": null,
+    "exchange": null,
+    "routing_key": null,
+    "headers": "{}",
+    "priority": null,
+    "expires": null,
+    "expire_seconds": null,
+    "one_off": false,
+    "start_time": "2024-08-01T18:16:52Z",
+    "enabled": false,
+    "last_run_at": null,
+    "total_run_count": 0,
+    "date_changed": "2024-08-01T18:21:05.635Z",
+    "description": ""
+  }
+},
+{
+  "model": "users.user",
+  "pk": 504026852,
+  "fields": {
+    "created_at": "2024-07-31T16:38:56.418Z",
+    "updated_at": "2024-08-01T17:59:47.274Z",
+    "username": "SergeyMi37",
+    "first_name": "Сергей",
+    "last_name": "Михайленко",
+    "language_code": "ru",
+    "deep_link": null,
+    "is_blocked_bot": false,
+    "is_admin": true
+  }
+},
+{
+  "model": "users.user",
+  "pk": 856383956,
+  "fields": {
+    "created_at": "2024-08-01T13:18:50.596Z",
+    "updated_at": "2024-08-01T17:43:32.544Z",
+    "username": "sntchweb",
+    "first_name": "Artem",
+    "last_name": null,
+    "language_code": "ru",
+    "deep_link": null,
+    "is_blocked_bot": false,
+    "is_admin": true
+  }
+},
+{
+  "model": "users.user",
+  "pk": 887115080,
+  "fields": {
+    "created_at": "2024-07-31T19:26:44.067Z",
+    "updated_at": "2024-08-01T15:36:58.892Z",
+    "username": "gu_dm_al",
+    "first_name": "Гусев Дмитрий Альбертович",
+    "last_name": null,
+    "language_code": "ru",
+    "deep_link": null,
+    "is_blocked_bot": false,
+    "is_admin": true
+  }
+},
+{
+  "model": "users.user",
+  "pk": 1091562245,
+  "fields": {
+    "created_at": "2024-08-01T16:58:03.048Z",
+    "updated_at": "2024-08-01T17:00:27.957Z",
+    "username": "cowboysadboy",
+    "first_name": "Sergey",
+    "last_name": "Zmeev",
+    "language_code": "ru",
+    "deep_link": null,
+    "is_blocked_bot": false,
+    "is_admin": true
+  }
+},
+{
+  "model": "users.user",
+  "pk": 1225379248,
+  "fields": {
+    "created_at": "2024-08-01T13:20:42.216Z",
+    "updated_at": "2024-08-01T15:37:33.959Z",
+    "username": "dmitriy_sergeev10",
+    "first_name": "Дмитрий",
+    "last_name": "Сергеев",
+    "language_code": "ru",
+    "deep_link": null,
+    "is_blocked_bot": false,
+    "is_admin": true
+  }
+},
+{
+  "model": "users.user",
+  "pk": 1235494841,
+  "fields": {
+    "created_at": "2024-08-01T16:53:44.831Z",
+    "updated_at": "2024-08-01T19:26:44.174Z",
+    "username": "gra_nat_al",
+    "first_name": "Наталья",
+    "last_name": "Грачёва",
+    "language_code": "ru",
+    "deep_link": null,
+    "is_blocked_bot": false,
+    "is_admin": true
+  }
+},
+{
+  "model": "users.user",
+  "pk": 5360496138,
+  "fields": {
+    "created_at": "2024-08-01T08:22:27.261Z",
+    "updated_at": "2024-08-01T15:37:15.642Z",
+    "username": "nwmber92",
+    "first_name": "Александр",
+    "last_name": "Гапеев",
+    "language_code": "ru",
+    "deep_link": null,
+    "is_blocked_bot": false,
+    "is_admin": true
+  }
+},
+{
+  "model": "users.user",
+  "pk": 5830722797,
+  "fields": {
+    "created_at": "2024-08-01T07:11:01.618Z",
+    "updated_at": "2024-08-01T15:37:09.976Z",
+    "username": "MswTele2",
+    "first_name": "42971",
+    "last_name": null,
+    "language_code": "ru",
+    "deep_link": null,
+    "is_blocked_bot": true,
+    "is_admin": false
+  }
+}
+]
