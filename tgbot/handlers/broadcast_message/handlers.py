@@ -55,7 +55,7 @@ def reports(update: Update, context: CallbackContext):
             _toDate = f"{params} ".split('date:')[1].split(" ")[0].split(":")[1]
             toDate = datetime.strptime(_toDate,  "%Y-%m-%d").date()
         forcopy=f"<pre>/reports date:{fromDate}:{toDate} mode:{mode} labels:{labels}</pre>"
-        print('---Reports-params:',fromDate,toDate,labels,mode)
+        #print('---Reports-params:',fromDate,toDate,labels,mode)
         report = forcopy+get_report(fromDate=fromDate,toDate=toDate,label=labels,mode=mode)
         update.message.reply_text(
             text=report,

@@ -5,9 +5,10 @@ DATETIME_TEMPLATE = "%Y.%m.%d %H:%M:%S"
 DATE_TEMPLATE = "%Y.%m.%d"
 DATETIME_MIN_LENGHT = 10
 
+# приведение строки 2024-07-31T20:00:00Z к объекту date() мск времени
 def tz_to_moscow(date_time: str) -> datetime:
     if 'T20:00:00Z' in date_time:
-      date_time = date_time.replace('T20:00:00Z','T21:00:00Z') # приведение к мск времени
+      date_time = date_time.replace('T20:00:00Z','T21:00:00Z') 
     if 'T17:00:00Z' in date_time:
       date_time = date_time.replace('T17:00:00Z','T21:00:00Z')
     if 'T18:00:00Z' in date_time:

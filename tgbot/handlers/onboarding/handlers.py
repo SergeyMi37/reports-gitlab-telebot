@@ -13,8 +13,11 @@ from tgbot.handlers.admin.static_text import BR
 from tgbot.handlers.broadcast_message.static_text import reports_wrong_format
 
 def command_help(update: Update, context: CallbackContext) -> None:
+    _up=update
+    print("--up--",_up)
     u, created = User.get_user_and_created(update, context)
     user_id = extract_user_data_from_update(update)['user_id']
+    print("--user--",update.replace('\'',chr(34)))
     if created:
         text = static_text.start_created.format(first_name=u.first_name)
     else:
