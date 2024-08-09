@@ -24,6 +24,23 @@ def admin_only(func: Callable):
 
     return wrapper
 
+def superadmin_only(func: Callable):
+    """
+    Super Admin only decorator
+    Used for handlers that only superadmins have access to
+    """
+
+    @wraps(func)
+    def wrapper(update: Update, context: CallbackContext, *args, **kwargs):
+        user = User.get_user(update, context)
+
+        if not user.is_superadmin:
+            return
+
+        return func(update, context, *args, **kwargs)
+
+    return wrapper
+
 
 def send_typing_action(func: Callable):
     """Sends typing action while processing func command."""

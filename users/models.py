@@ -27,6 +27,8 @@ class User(CreateUpdateTracker):
     is_blocked_bot = models.BooleanField(default=False)
 
     is_admin = models.BooleanField(default=False)
+    is_superadmin = models.BooleanField(default=False)
+    roles = models.CharField(max_length=256,default='',help_text="Роли пользователя через запятую", **nb)
 
     objects = GetOrNoneManager()  # user = User.objects.get_or_none(user_id=<some_id>)
     admins = AdminUserManager()  # User.admins.all()

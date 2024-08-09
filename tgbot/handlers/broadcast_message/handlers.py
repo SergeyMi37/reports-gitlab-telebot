@@ -66,7 +66,7 @@ def broadcast_command_with_message(update: Update, context: CallbackContext):
     """ Type /broadcast <some_text>. Then check your message in HTML format and broadcast to users."""
     u = User.get_user(update, context)
 
-    if not u.is_admin:
+    if not u.is_superadmin:
         update.message.reply_text(
             text=broadcast_no_access,
         )
