@@ -31,12 +31,18 @@ def reports(update: Update, context: CallbackContext):
                 parse_mode=telegram.ParseMode.HTML,
             )
             return
-
-        params = f"{update.message.text.replace(f'{reports_command} ', '')}"
+        if " " in update.message.text:
+            params = f"{update.message.text.replace(f'{reports_command} ', '')}"
+        else:
+            par = f"{update.message.text.replace(f'{reports_command}_', '')}"
+            #fd=str(fromDate).replace("-","")
+            #td=str(toDate).replace("-","")
+            #lb=label.replace("Рейтинг","rating").replace("ВПР","vpr").replace("Табель","tabel")
+        
         # Логика разбора параметров
         mode="name"
         labels=GITLAB_LABELS
-        
+        print('-------',params)
         if 'date:yesterday' in params:
             _fromDate = datetime.now() + timedelta(days=-1)
             fromDate=_fromDate.date()
