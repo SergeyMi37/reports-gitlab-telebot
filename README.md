@@ -368,5 +368,5 @@ After that you can open admin panel of your deployed app which is located at htt
 dokku logs dtb -t
 ```
 
-
 ----
+python -m IPython

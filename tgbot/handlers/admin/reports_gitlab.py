@@ -41,66 +41,44 @@ def command_daily(update: Update, context: CallbackContext, reportDate = '' ) ->
       fromDate = reportDate
     else:
        fromDate = datetime.today().date()
-    labels="Табель"
-    forcopy=f"<pre>/reports date:{fromDate}:{fromDate} labels:{labels}</pre>"
-    update.message.reply_text(
-        text=forcopy+get_report(fromDate=fromDate,label=labels),
-        parse_mode=ParseMode.HTML,
-        disable_web_page_preview=True,
-    )
+    labels = GITLAB_LABELS
+    put_report(update=update, fromDate=fromDate,label=labels)
 
-def command_daily_rating_noname(update: Update, context: CallbackContext) -> None:
+def command_daily_vpr_noname(update: Update, context: CallbackContext) -> None:
+  command_daily_rating_noname(update, context,lab = "ВПР")
+
+def command_daily_rating_noname(update: Update, context: CallbackContext,lab = "") -> None:
     u = User.get_user(update, context)
     if not u.is_admin:
         update.message.reply_text(static_text.only_for_admins)
         return
     fromDate=datetime.today().date()
-    labels="Табель,Рейтинг"
-    mode="noname"
-    forcopy=f"<pre>/reports date:{fromDate}:{fromDate} mode:{mode} labels:{labels}</pre>"
-    update.message.reply_text(
-        text=forcopy+get_report(fromDate=fromDate,label=labels,mode="noname"),
-        parse_mode=ParseMode.HTML,
-        disable_web_page_preview=True,
-    )
+    lab = "Рейтинг" if update.message.text=='/daily_rating_noname' else 'ВПР'
+    labels = GITLAB_LABELS + "," + lab
+    put_report(update=update, fromDate=fromDate,label=labels,mode="noname")
 
-def command_daily_rating(update: Update, context: CallbackContext) -> None:
+def command_daily_rating(update: Update, context: CallbackContext,lab = "") -> None:
     u = User.get_user(update, context)
     if not u.is_admin:
         update.message.reply_text(static_text.only_for_admins)
         return
     fromDate=datetime.today().date()
-    labels="Табель,Рейтинг"
-    forcopy=f"<pre>/reports date:{fromDate}:{fromDate} labels:{labels}</pre>"
-    update.message.reply_text(
-        text=forcopy+get_report(fromDate=fromDate,label=labels),
-        parse_mode=ParseMode.HTML,
-        disable_web_page_preview=True,
-    )
-
+    lab = "Рейтинг" if update.message.text=='/daily_rating' else 'ВПР'
+    labels = GITLAB_LABELS + ","+lab
+    put_report(update=update, fromDate=fromDate,label=labels)
+    
 def command_weekly_rating(update: Update, context: CallbackContext) -> None:
     u = User.get_user(update, context)
-    
     _fromDate = datetime.now() + timedelta(days=-7)
     fromDate=_fromDate.date()
     toDate = datetime.today().date()
     if not u.is_admin:
         update.message.reply_text(static_text.only_for_admins)
         return
-    labels="Табель,Рейтинг"
-    forcopy=f"<pre>/reports date:{fromDate}:{toDate} labels:{labels}</pre>"
-    text=forcopy + get_report(fromDate=fromDate,toDate=toDate,label=labels)
-    '''
-    print('--',text)
-    ot=0 #!!!!!!!!!!
-    po=4000
-    do=po
-    '''
-    update.message.reply_text(
-        text=text,
-        parse_mode=ParseMode.HTML,
-        disable_web_page_preview=True,
-    )
+    print("==update= ",update.message.text)
+    lab = "Рейтинг" if update.message.text=='/weekly_rating' else 'ВПР'
+    labels = GITLAB_LABELS + ","+lab
+    put_report(update=update,fromDate=fromDate,toDate=toDate,label=labels)
 
 def get_issues(url: str,
                     labels: str = 'Табель',
@@ -276,14 +254,16 @@ def admin_old(update: Update, context: CallbackContext) -> None:
         return
     update.message.reply_text(static_text.secret_admin_commands)
 
-def get_report(label: str = "Табель", fromDate: datetime="", toDate: datetime="", mode: str='name'):
-    
+def get_report(label: str = "Табель", fromDate: datetime="", toDate: datetime="", mode: str='name', pref: str=''):
     if toDate=='':
        toDate=fromDate
     if toDate==fromDate:
       _date=f'за {fromDate}'
     else:
       _date=f'с {fromDate} по {toDate}'
+
+    prefix = f"<pre>/reports date:{fromDate}:{toDate} mode:{mode} labels:{label}</pre>" if pref=='' else pref
+    
     errno, answer = get_issues_id(GITLAB_URL,label)
     #print('---',errno, answer)
     summ=f"{label}{static_text.BR}<b>Выполненные мероприятия {_date}</b>{static_text.BR+static_text.BR}"
@@ -295,8 +275,25 @@ def get_report(label: str = "Табель", fromDate: datetime="", toDate: datet
         if summ==sum:
            summ=summ+' не найдено'
         summ += static_text.BR+'/help'
-        return summ[:4090]
+        return summ, prefix #[:4090]
     else:
-       return errno
+       return errno, prefix
 
+def put_report(update: Update, label: str = "", fromDate: datetime="", toDate: datetime="", mode: str='name'):
 
+    txt, pref = get_report(fromDate=fromDate,toDate=toDate,label=label,mode=mode)
+    CONST = 4090
+    ot=0
+    do=CONST
+    text = pref + txt
+    for i in range(15):
+      update.message.reply_text(
+        text = text[ot:do],
+        parse_mode=ParseMode.HTML,
+        disable_web_page_preview=True,
+        )
+      ot=ot+CONST
+      do=do+CONST
+      if text[ot:do]=='':
+         break
+    

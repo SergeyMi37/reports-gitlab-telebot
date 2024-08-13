@@ -29,10 +29,16 @@ def setup_dispatcher(dp):
     dp.add_handler(CommandHandler("start", onboarding_handlers.command_start))
     dp.add_handler(CommandHandler("help", onboarding_handlers.command_help)) 
     dp.add_handler(CommandHandler("daily", reports_gitlab.command_daily)) 
+    dp.add_handler(CommandHandler("yesterday", reports_gitlab.command_yesterday)) 
+
     dp.add_handler(CommandHandler("daily_rating_noname", reports_gitlab.command_daily_rating_noname)) 
     dp.add_handler(CommandHandler("daily_rating", reports_gitlab.command_daily_rating)) 
     dp.add_handler(CommandHandler("weekly_rating", reports_gitlab.command_weekly_rating)) 
-    dp.add_handler(CommandHandler("yesterday", reports_gitlab.command_yesterday)) 
+
+    dp.add_handler(CommandHandler("daily_vpr_noname", reports_gitlab.command_daily_rating_noname)) 
+    dp.add_handler(CommandHandler("daily_vpr", reports_gitlab.command_daily_rating)) 
+    dp.add_handler(CommandHandler("weekly_vpr", reports_gitlab.command_weekly_rating)) 
+
     # admin commands
     dp.add_handler(CommandHandler("admin", admin_handlers.admin))
     dp.add_handler(CommandHandler("stats", admin_handlers.stats))

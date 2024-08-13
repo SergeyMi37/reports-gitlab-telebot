@@ -22,9 +22,17 @@ def command_help(update: Update, context: CallbackContext) -> None:
     text += BR+'/start: Кнопки ссылок на проект "Табель" 📊'
     text += BR+'/daily: Отчет за ЛРПО ежедневный по меткам "Табель" 📊'
     text += BR+'/yesterday: Отчет за ЛРПО вчерашний по меткам "Табель" 📊'
-    text += BR+'/daily_rating: Отчет ежедневный по меткам "Табель,Рейтинг" 📊'
-    text += BR+'/daily_rating_noname: Отчет ежедневный по меткам "Табель,Рейтинг" обезличенный 📊'
-    text += BR+'/weekly_rating: Отчет еженедельный по меткам "Табель,Рейтинг" 📊'
+    text += BR
+    if "Рейтинг" in u.roles or "All" in u.roles:
+        text += BR+'/daily_rating: Отчет ежедневный по метке "Рейтинг" 📊'
+        text += BR+'/daily_rating_noname: Отчет ежедневный по метке "Рейтинг" обезличенный 📊'
+        text += BR+'/weekly_rating: Отчет еженедельный по метке "Рейтинг" 📊'
+    text += BR
+    if "ВПР" in u.roles or "All" in u.roles:
+        text += BR+'/daily_vpr: Отчет ежедневный по метке "ВПР" 📊'
+        text += BR+'/daily_vpr_noname: Отчет ежедневный по метке "ВПР" обезличенный 📊'
+        text += BR+'/weekly_vpr: Отчет еженедельный по метке "ВПР" 📊'
+    text += BR
     text += BR + reports_wrong_format
     #text += BR+'/ask_location: Отправить локацию 📍'
     #text += BR+'/export_users: Экспорт users.csv 👥'

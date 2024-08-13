@@ -12,7 +12,9 @@ from .static_text import broadcast_command, broadcast_wrong_format, broadcast_no
 from users.models import User
 from users.tasks import broadcast_message
 from datetime import datetime, timedelta
-from tgbot.handlers.admin.reports_gitlab import get_report
+from tgbot.handlers.admin.reports_gitlab import put_report
+import os
+GITLAB_LABELS = os.getenv('GITLAB_LABELS')
 
 def reports(update: Update, context: CallbackContext):
     """ Reports."""
@@ -33,7 +35,8 @@ def reports(update: Update, context: CallbackContext):
         params = f"{update.message.text.replace(f'{reports_command} ', '')}"
         # Логика разбора параметров
         mode="name"
-        labels="Табель"
+        labels=GITLAB_LABELS
+        
         if 'date:yesterday' in params:
             _fromDate = datetime.now() + timedelta(days=-1)
             fromDate=_fromDate.date()
@@ -54,13 +57,9 @@ def reports(update: Update, context: CallbackContext):
             fromDate = datetime.strptime(_fromDate, "%Y-%m-%d").date()
             _toDate = f"{params} ".split('date:')[1].split(" ")[0].split(":")[1]
             toDate = datetime.strptime(_toDate,  "%Y-%m-%d").date()
-        forcopy=f"<pre>/reports date:{fromDate}:{toDate} mode:{mode} labels:{labels}</pre>"
+        
         #print('---Reports-params:',fromDate,toDate,labels,mode)
-        report = forcopy+get_report(fromDate=fromDate,toDate=toDate,label=labels,mode=mode)
-        update.message.reply_text(
-            text=report,
-            parse_mode=telegram.ParseMode.HTML,
-        )
+        put_report(update=update, fromDate=fromDate,toDate=toDate,label=labels,mode=mode)
 
 def broadcast_command_with_message(update: Update, context: CallbackContext):
     """ Type /broadcast <some_text>. Then check your message in HTML format and broadcast to users."""
