@@ -47,10 +47,10 @@ def reports(update: Update, context: CallbackContext):
                 pass
             lbl=GITLAB_LABELS
             try:
-                lb = par.split("labels_")[1].split("_")[0]
-                lbl=lb.replace("rating","Рейтинг").replace("vpr","ВПР").replace("tabel","Табель")
-            except:
-                pass
+                lb = par.split("labels_")[1] #.split("_")[0:-1]
+                lbl=lb.replace("rating","Рейтинг").replace("vpr","ВПР").replace("tabel","Табель").replace("_",",")
+            except Exception as err:
+                print("---err-lbl-",err)
             fda = f'{fd[0:4]}-{fd[4:6]}-{fd[6:8]}'
             tda = f'{td[0:4]}-{td[4:6]}-{td[6:8]}'
             #print(fda,td,md,lbl)

@@ -277,7 +277,7 @@ def get_report(label: str = "Табель", fromDate: datetime="", toDate: datet
     #prefix = f"<pre>/reports date:{fromDate}:{toDate} mode:{mode} labels:{label}</pre>" if pref=='' else pref
     fd=str(fromDate).replace("-","")
     td=str(toDate).replace("-","")
-    lb=label.replace("Рейтинг","rating").replace("ВПР","vpr").replace("Табель","tabel")
+    lb=label.replace("Рейтинг","rating").replace("ВПР","vpr").replace("Табель","tabel").replace(",","_")
     prefix = f"/reports_date_{fd}_{td}_mode_{mode}_labels_{lb}" if pref=='' else pref
     
     errno, answer = get_issues_id(GITLAB_URL,label)
