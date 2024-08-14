@@ -9,7 +9,7 @@ from tgbot.handlers.admin.utils import _get_csv_from_qs_values
 from tgbot.handlers.utils.decorators import admin_only, send_typing_action
 from tgbot.handlers.utils.date_utils import tz_to_moscow
 from users.models import User
-
+from tgbot.handlers.admin.static_text import BR
 import os
 from typing import Any
 #import datetime
@@ -26,6 +26,18 @@ ACCESS_TOKEN = os.getenv('ACCESS_TOKEN')
 GRAPHQL_URL = os.getenv('GRAPHQL_URL')
 GITLAB_URL = os.getenv('GITLAB_URL')
 GITLAB_LABELS = os.getenv('GITLAB_LABELS')
+
+def get_tele_command(update: Update) -> str:
+   #print('---update:---',update)
+   try:
+      if update.message.text:
+         return update.message.text, update.message
+      else:
+         return update.edited_message.text, update.message
+   except Exception as err:
+      #print("---err-get_tele_command-",err)
+      return update.edited_message.text, update.edited_message
+
 
 def command_yesterday(update: Update, context: CallbackContext) -> None:
   _fromDate = datetime.now() + timedelta(days=-1)
@@ -286,12 +298,13 @@ def get_report(label: str = "Табель", fromDate: datetime="", toDate: datet
 def put_report(update: Update, label: str = "", fromDate: datetime="", toDate: datetime="", mode: str='name'):
 
     txt, pref = get_report(fromDate=fromDate,toDate=toDate,label=label,mode=mode)
+    telecmd, upms = get_tele_command(update)
     CONST = 4090
     ot=0
     do=CONST
-    text = pref + txt
+    text = pref +BR+ txt
     for i in range(15):
-      update.message.reply_text(
+      upms.reply_text(
         text = text[ot:do],
         parse_mode=ParseMode.HTML,
         disable_web_page_preview=True,

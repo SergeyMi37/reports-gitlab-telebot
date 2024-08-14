@@ -12,37 +12,53 @@ from .static_text import broadcast_command, broadcast_wrong_format, broadcast_no
 from users.models import User
 from users.tasks import broadcast_message
 from datetime import datetime, timedelta
-from tgbot.handlers.admin.reports_gitlab import put_report
+from tgbot.handlers.admin.reports_gitlab import put_report, get_tele_command
 import os
 GITLAB_LABELS = os.getenv('GITLAB_LABELS')
 
 def reports(update: Update, context: CallbackContext):
     """ Reports."""
+    telecmd, upms = get_tele_command(update)
+
     u = User.get_user(update, context)
     if not u.is_admin:
-        update.message.reply_text(
+        upms.reply_text(
             text=reports_no_access,
         )
     else:
-        if update.message.text == reports_command:
+        if telecmd == reports_command:
             # user typed only command without text for the message.
-            update.message.reply_text(
+            upms.reply_text(
                 text=reports_wrong_format,
                 parse_mode=telegram.ParseMode.HTML,
             )
             return
-        if " " in update.message.text:
-            params = f"{update.message.text.replace(f'{reports_command} ', '')}"
+        if " " in telecmd:
+            params = f"{telecmd.replace(f'{reports_command} ', '')}"
         else:
-            par = f"{update.message.text.replace(f'{reports_command}_', '')}"
-            #fd=str(fromDate).replace("-","")
-            #td=str(toDate).replace("-","")
-            #lb=label.replace("Рейтинг","rating").replace("ВПР","vpr").replace("Табель","tabel")
-        
+            par = f"{telecmd.replace(f'{reports_command}_', '')}"
+            #/reports_date_20240813_20240813_mode_name_labels_tabel
+            fd = par.split("date_")[1].split("_")[0]
+            td = par.split("date_")[1].split("_")[1]
+            md="name"
+            try:
+                md = par.split("mode_")[1].split("_")[0]
+            except:
+                pass
+            lbl=GITLAB_LABELS
+            try:
+                lb = par.split("labels_")[1].split("_")[0]
+                lbl=lb.replace("rating","Рейтинг").replace("vpr","ВПР").replace("tabel","Табель")
+            except:
+                pass
+            fda = f'{fd[0:4]}-{fd[4:6]}-{fd[6:8]}'
+            tda = f'{td[0:4]}-{td[4:6]}-{td[6:8]}'
+            #print(fda,td,md,lbl)
+            params = f'date:{fda}:{tda} mode:{md} labels:{lbl}'
         # Логика разбора параметров
         mode="name"
         labels=GITLAB_LABELS
-        print('-------',params)
+        print('---params----',params)
         if 'date:yesterday' in params:
             _fromDate = datetime.now() + timedelta(days=-1)
             fromDate=_fromDate.date()
@@ -64,7 +80,6 @@ def reports(update: Update, context: CallbackContext):
             _toDate = f"{params} ".split('date:')[1].split(" ")[0].split(":")[1]
             toDate = datetime.strptime(_toDate,  "%Y-%m-%d").date()
         
-        #print('---Reports-params:',fromDate,toDate,labels,mode)
         put_report(update=update, fromDate=fromDate,toDate=toDate,label=labels,mode=mode)
 
 def broadcast_command_with_message(update: Update, context: CallbackContext):
