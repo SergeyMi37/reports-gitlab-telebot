@@ -8,7 +8,9 @@ reports_wrong_format = f'{reports_command} После ключевого сло�
                         f'  date:weekly - отчет за неделю\n' \
                         f'  date:гггг-мм-дд:гггг-мм-дд - отчет за конкретный период\n' \
                         f'  mode:name - включяать в отчет ФИО и дату\n' \
-                        f'  labels:Табель,Рейтинг,Михайленко С.В.\n'
+                        f'  labels:Табель,Рейтинг,Михайленко С.В.\n\n' \
+                        f'Или в другом формате:' \
+                        f'  /reports_date_20240815_20240815_mode_noname_labels_tabel_rating\n'
 broadcast_command = '/broadcast'
 broadcast_no_access = "Sorry, you don't have access to this function."
 broadcast_wrong_format = f'To send message to all your users,' \

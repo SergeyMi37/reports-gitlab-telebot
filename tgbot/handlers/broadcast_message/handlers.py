@@ -33,7 +33,7 @@ def reports(update: Update, context: CallbackContext):
                 parse_mode=telegram.ParseMode.HTML,
             )
             return
-        if " " in telecmd:
+        if f'{reports_command} ' in telecmd:
             params = f"{telecmd.replace(f'{reports_command} ', '')}"
         else:
             par = f"{telecmd.replace(f'{reports_command}_', '')}"
@@ -85,31 +85,31 @@ def reports(update: Update, context: CallbackContext):
 def broadcast_command_with_message(update: Update, context: CallbackContext):
     """ Type /broadcast <some_text>. Then check your message in HTML format and broadcast to users."""
     u = User.get_user(update, context)
-
+    telecmd, upms = get_tele_command(update)
     if not u.is_superadmin:
-        update.message.reply_text(
+        upms.reply_text(
             text=broadcast_no_access,
         )
     else:
-        if update.message.text == broadcast_command:
+        if telecmd == broadcast_command:
             # user typed only command without text for the message.
-            update.message.reply_text(
+            upms.reply_text(
                 text=broadcast_wrong_format,
                 parse_mode=telegram.ParseMode.HTML,
             )
             return
 
-        text = f"{update.message.text.replace(f'{broadcast_command} ', '')}"
+        text = f"{upms.text.replace(f'{broadcast_command} ', '')}"
         markup = keyboard_confirm_decline_broadcasting()
 
         try:
-            update.message.reply_text(
+            upms.reply_text(
                 text=text,
                 parse_mode=telegram.ParseMode.HTML,
                 reply_markup=markup,
             )
         except telegram.error.BadRequest as e:
-            update.message.reply_text(
+            upms.reply_text(
                 text=error_with_html.format(reason=e),
                 parse_mode=telegram.ParseMode.HTML,
             )

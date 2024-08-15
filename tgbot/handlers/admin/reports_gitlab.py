@@ -135,7 +135,7 @@ def get_open_issues(url: str,
         'PRIVATE-TOKEN': ACCESS_TOKEN,
         'Accept': 'application/json;odata=verbose'
         }
-  print('---',_url,headers)
+  #print('---',_url,headers)
   try:
       response = requests.get(_url,verify=False,headers=headers)
       if response.status_code == 200:
