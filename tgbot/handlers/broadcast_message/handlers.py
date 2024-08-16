@@ -70,8 +70,8 @@ def reports(update: Update, context: CallbackContext):
             _fromDate = datetime.now() + timedelta(days=-7)
             fromDate=_fromDate.date()
             toDate = datetime.today().date()
-        if 'mode:noname' in params:
-            mode="noname"
+        if 'mode:' in params:
+            mode = params.split('mode:')[1].split(" ")[0]
         if 'labels:' in params:
             labels = params.split('labels:')[1]
         if 'date:20' in params:

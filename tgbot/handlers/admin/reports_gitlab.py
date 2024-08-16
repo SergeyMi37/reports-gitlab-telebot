@@ -5,7 +5,7 @@ from telegram import ParseMode, Update
 from telegram.ext import CallbackContext
 
 from tgbot.handlers.admin import static_text
-from tgbot.handlers.admin.utils import _get_csv_from_qs_values
+from tgbot.handlers.admin.utils import _get_csv_from_qs_values, _get_csv_from_txt
 from tgbot.handlers.utils.decorators import admin_only, send_typing_action
 from tgbot.handlers.utils.date_utils import tz_to_moscow
 from users.models import User
@@ -87,7 +87,6 @@ def command_weekly_rating(update: Update, context: CallbackContext) -> None:
     if not u.is_admin:
         update.message.reply_text(static_text.only_for_admins)
         return
-    print("==update= ",update.message.text)
     lab = "Рейтинг" if update.message.text=='/weekly_rating' else 'ВПР'
     labels = GITLAB_LABELS + ","+lab
     put_report(update=update,fromDate=fromDate,toDate=toDate,label=labels)
@@ -303,14 +302,19 @@ def put_report(update: Update, label: str = "", fromDate: datetime="", toDate: d
     ot=0
     do=CONST
     text = pref +BR+ txt
-    for i in range(15):
-      upms.reply_text(
-        text = text[ot:do],
-        parse_mode=ParseMode.HTML,
-        disable_web_page_preview=True,
-        )
-      ot=ot+CONST
-      do=do+CONST
-      if text[ot:do]=='':
-         break
+    if mode=='filetxt':
+      #textdoc = _get_csv_from_txt(text)
+      #update.message.reply_document(file_name='e:\\mosvodokanal\\!\\ответМВС.png')
+      upms.reply_document('e:\\mosvodokanal\\!\\ответМВС.png')
+    else:
+      for i in range(15):
+        upms.reply_text(
+          text = text[ot:do],
+          parse_mode=ParseMode.HTML,
+          disable_web_page_preview=True,
+          )
+        ot=ot+CONST
+        do=do+CONST
+        if text[ot:do]=='':
+          break
     

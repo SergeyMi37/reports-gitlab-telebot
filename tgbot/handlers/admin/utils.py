@@ -8,7 +8,8 @@ from typing import Dict
 
 def _get_csv_from_qs_values(queryset: QuerySet[Dict], filename: str = 'users'):
     keys = queryset[0].keys()
-
+    print('--csvkeys-',type(keys),keys)
+    print('--csv-',type(queryset),queryset)
     # csv module can write data in io.StringIO buffer only
     s = io.StringIO()
     dict_writer = csv.DictWriter(s, fieldnames=keys)
@@ -29,7 +30,7 @@ def _get_csv_from_qs_values(queryset: QuerySet[Dict], filename: str = 'users'):
 
     return buf
 
-def _get_csv_from_txt(txt: str, filename: str = 'Issues'):
+def _get_csv_from_txt(txt: str, filename: str = 'report'):
     #keys = queryset[0].keys()
 
     # csv module can write data in io.StringIO buffer only
