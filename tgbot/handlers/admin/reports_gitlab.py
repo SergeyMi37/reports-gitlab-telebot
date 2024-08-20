@@ -221,7 +221,7 @@ def get_report_issue(id_issue: int = None, fromDate: datetime="", toDate: dateti
   #if id_issue==721:print("===",id_issue,answer)
   answer_list = []
   summ=""
-  week=''
+  week={}
   answer_item = dict()
   if errno == "code.CODE_GITLAB_GET_ISSUE_TRACKING_OK":
     if answer.get('data') is not None:
@@ -242,10 +242,9 @@ def get_report_issue(id_issue: int = None, fromDate: datetime="", toDate: dateti
             userfio=''
             if mode == 'weekly':
               #print('---',summary)
-              if "$" in summary:
+              if "$" in summary and (summary.split("$")[0] !='') :
                 #week += summary.split("$")[0] + static_text.BR
-                week += summary + static_text.BR
-                #print('-++',summary.split("$")[0])
+                week[f'{summary.split("$")[0]}']={}
             elif mode != "noname":
                 userfio=f'{answer_item["name"].split(" ")[0]} {answer_item["spent_at"].strftime("%Y-%m-%d")} {item.get("spentAt")} {static_text.BR}'
             
@@ -295,12 +294,12 @@ def get_report(label: str = "Табель", fromDate: datetime="", toDate: datet
     #print('---',errno, answer)
     summ=f"{label}{static_text.BR}Выполненные мероприятия {_date}{static_text.BR+static_text.BR}"
     sum=summ
-    week=summ
+    week={}
     if errno == "code.CODE_GITLAB_GET_ISSUE_OK":
         for item in answer:
             errno, answer, _summ, _week = get_report_issue(id_issue=item, fromDate=fromDate, toDate=toDate, mode=mode)
             summ=summ+_summ
-            week=week+_week
+            week= {**week, **_week}
         if summ==sum:
            summ=summ+' не найдено'
         summ += static_text.BR+'/help'
@@ -315,7 +314,13 @@ def put_report(update: Update, label: str = "", fromDate: datetime="", toDate: d
     CONST = 4090
     ot=0
     do=CONST
-    text = pref +BR+ txt if mode != 'week' else "Недельная сводка"+BR+week
+    
+    if mode == 'weekly':
+      text = pref +BR+ "<b>Недельная сводка</b>" + BR + BR
+      for key in week:
+         text += key + BR + BR
+    else:
+      text = pref +BR+ txt 
 
     media_dir = Path(__file__).resolve().parent.parent.parent.parent.joinpath('downloads')
     if not os.path.exists(media_dir):
