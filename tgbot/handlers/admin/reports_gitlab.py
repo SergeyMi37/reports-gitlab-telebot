@@ -5,12 +5,13 @@ from telegram import ParseMode, Update
 from telegram.ext import CallbackContext
 
 from tgbot.handlers.admin import static_text
-from tgbot.handlers.admin.utils import _get_csv_from_qs_values, _get_csv_from_txt
+from tgbot.handlers.admin.utils import _get_csv_from_qs_values
 from tgbot.handlers.utils.decorators import admin_only, send_typing_action
 from tgbot.handlers.utils.date_utils import tz_to_moscow
 from users.models import User
 from tgbot.handlers.admin.static_text import BR
 import os
+from pathlib import Path
 from typing import Any
 #import datetime
 from datetime import datetime, timedelta
@@ -18,6 +19,7 @@ from datetime import datetime, timedelta
 import requests
 import json
 from tgbot.handlers.admin import static_text
+from openpyxl import Workbook
 
 CERT_FILE = os.getenv('CERT_FILE')
 CERT_KEY_FILE = os.getenv('CERT_KEY_FILE')
@@ -302,12 +304,48 @@ def put_report(update: Update, label: str = "", fromDate: datetime="", toDate: d
     ot=0
     do=CONST
     text = pref +BR+ txt
-    if mode=='filetxt':
-      #textdoc = _get_csv_from_txt(text)
-      #update.message.reply_document(file_name='e:\\mosvodokanal\\!\\ответМВС.png')
-      upms.reply_document('e:\\mosvodokanal\\!\\ответМВС.png')
+    media_dir = Path(__file__).resolve().parent.parent.parent.parent.joinpath('downloads')
+    if not os.path.exists(media_dir):
+      os.mkdir(media_dir)
+    # Вывод в файл XLSX
+    if mode=='xlsx':
+      wb = Workbook() # creates a workbook object.
+      ws = wb.active # creates a worksheet object.
+      #_out=[[f"{pref}"],["Дата","ФИО", "Дата UTC", "Мероприятия"]]
+      outlist = text.split(BR)
+      #ws.append([f"{pref}"])
+      ws.append([f"{outlist[2]}"])
+      
+      ws.append(["Дата","ФИО", "Дата UTC", "Мероприятия"])
+
+      for row in outlist[3:-1]:
+        #print(row,type(row))
+        if row !='':
+          ws.append(['','','',row]) # adds values to cells, each list is a new row.
+      ws.column_dimensions.__getitem__("A").width = "15"
+      ws.column_dimensions.__getitem__("B").width = "35"
+      ws.column_dimensions.__getitem__("C").width = "15"
+      ws.column_dimensions.__getitem__("D").width = "90"
+      ws.freeze_panes="B3"
+      _file = os.path.join(media_dir, f'{telecmd[1:-1]}_{upms.chat.id}.xlsx')
+      wb.save(_file) # save to excel file.
+      upms.reply_document(open(_file, 'rb'))
+    
+    # Вывод в текстовый файл
+    elif mode=='txt':
+      lines = text.split(BR)
+      _file = os.path.join(media_dir, f'{telecmd[1:-1]}_{upms.chat.id}.txt')
+      with open(_file, "w") as file:
+        for  line in lines:
+          if line !='':
+            file.write(line + '\n')
+      upms.reply_document(open(_file, 'rb'))
+      #for row in txt.split(BR):
+      #  print(row)
+
+    # вывод в цикле текстом
     else:
-      for i in range(15):
+      while True:
         upms.reply_text(
           text = text[ot:do],
           parse_mode=ParseMode.HTML,

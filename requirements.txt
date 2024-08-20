@@ -1,7 +1,7 @@
 pytz
 requests
 python-dotenv
-
+openpyxl
 ipython==8.5.0  # enhanced python interpreter
 
 # Django
