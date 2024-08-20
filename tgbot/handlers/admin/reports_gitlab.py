@@ -76,22 +76,22 @@ def command_daily_rating(update: Update, context: CallbackContext,lab = "") -> N
     if not u.is_admin:
         update.message.reply_text(static_text.only_for_admins)
         return
-    fromDate=datetime.today().date()
-    lab = "Рейтинг" if update.message.text=='/daily_rating' else 'ВПР'
+    
+    fromDate = datetime.today().date() if 'daily_' in update.message.text else (datetime.now() + timedelta(days=-1)).date()
+    lab = "Рейтинг" if '_rating' in update.message.text else 'ВПР'
     labels = GITLAB_LABELS + ","+lab
     put_report(update=update, fromDate=fromDate,label=labels)
     
 def command_weekly_rating(update: Update, context: CallbackContext) -> None:
     u = User.get_user(update, context)
-    _fromDate = datetime.now() + timedelta(days=-7)
-    fromDate=_fromDate.date()
+    fromDate = (datetime.now() + timedelta(days=-7)).date()
     toDate = datetime.today().date()
     if not u.is_admin:
         update.message.reply_text(static_text.only_for_admins)
         return
-    lab = "Рейтинг" if update.message.text=='/weekly_rating' else 'ВПР'
+    lab = "Рейтинг" if '_rating' in update.message.text else 'ВПР'
     labels = GITLAB_LABELS + ","+lab
-    put_report(update=update,fromDate=fromDate,toDate=toDate,label=labels)
+    put_report(update=update,fromDate=fromDate,toDate=toDate,label=labels,mode='weekly')
 
 def get_issues(url: str,
                     labels: str = 'Табель',
@@ -219,17 +219,20 @@ def get_report_issue(id_issue: int = None, fromDate: datetime="", toDate: dateti
   '''
   errno, answer = post_issue(number_issue=id_issue)
   #if id_issue==721:print("===",id_issue,answer)
+  answer_list = []
+  summ=""
+  week=''
+  answer_item = dict()
   if errno == "code.CODE_GITLAB_GET_ISSUE_TRACKING_OK":
     if answer.get('data') is not None:
       if answer.get('data').get('issuable') is not None:
-        answer_list = []
-        summ=""
-        answer_item = dict()
+        #
         #answer_item['id_issue'] = validate_int_is_none(get_last_for_split(answer.get('data').get('issuable').get('id')))
         answer_item['title'] = answer.get('data').get('issuable').get('title')
         for item in answer.get('data').get('issuable').get('timelogs').get('nodes'):
           answer_item['name'] = item.get('user').get('name')
-          answer_item['summary'] = str(item.get('summary'))
+          summary=str(item.get('summary'))
+          answer_item['summary'] = summary
           answer_item['note'] = item.get('note')
           _spentAt=item.get('spentAt')
           answer_item['spent_at'] = tz_to_moscow(_spentAt)
@@ -237,11 +240,18 @@ def get_report_issue(id_issue: int = None, fromDate: datetime="", toDate: dateti
           if answer_item['spent_at']>=fromDate and (answer_item['spent_at']<=toDate):
             #if id_issue==721:              print("------",answer_item['spent_at'],str(item.get('summary')))
             userfio=''
-            if mode=="name":
+            if mode == 'weekly':
+              #print('---',summary)
+              if "$" in summary:
+                #week += summary.split("$")[0] + static_text.BR
+                week += summary + static_text.BR
+                #print('-++',summary.split("$")[0])
+            elif mode != "noname":
                 userfio=f'{answer_item["name"].split(" ")[0]} {answer_item["spent_at"].strftime("%Y-%m-%d")} {item.get("spentAt")} {static_text.BR}'
-            summ += f"{userfio} {item.get('summary')}{static_text.BR+static_text.BR}"
+            
+            summ += f"{userfio} {summary.replace('$','.') }{static_text.BR+static_text.BR}"
           answer_list.append(answer_item)
-        return errno, answer_list, summ
+        return errno, answer_list, summ, week
       else:
         errno = "code.CODE_GITLAB_ISSUE_TRACKING_EMPTY"
         answer = {
@@ -255,9 +265,9 @@ def get_report_issue(id_issue: int = None, fromDate: datetime="", toDate: dateti
         'errno': errno,
         'err_message': f'{(errno)}:{err_message}'
       }
-    return errno, answer
+    return errno, answer, summ, week
   else:
-    return errno, answer
+    return errno, answer, summ, week
 
 def admin_old(update: Update, context: CallbackContext) -> None:
     """ Show help info about all secret admins commands """
@@ -283,31 +293,34 @@ def get_report(label: str = "Табель", fromDate: datetime="", toDate: datet
     
     errno, answer = get_issues_id(GITLAB_URL,label)
     #print('---',errno, answer)
-    summ=f"{label}{static_text.BR}<b>Выполненные мероприятия {_date}</b>{static_text.BR+static_text.BR}"
+    summ=f"{label}{static_text.BR}Выполненные мероприятия {_date}{static_text.BR+static_text.BR}"
     sum=summ
+    week=summ
     if errno == "code.CODE_GITLAB_GET_ISSUE_OK":
         for item in answer:
-            errno, answer, _summ = get_report_issue(id_issue=item, fromDate=fromDate, toDate=toDate, mode=mode)
+            errno, answer, _summ, _week = get_report_issue(id_issue=item, fromDate=fromDate, toDate=toDate, mode=mode)
             summ=summ+_summ
+            week=week+_week
         if summ==sum:
            summ=summ+' не найдено'
         summ += static_text.BR+'/help'
-        return summ, prefix #[:4090]
+        return summ, prefix, week #[:4090]
     else:
-       return errno, prefix
+       return errno, prefix, week
 
 def put_report(update: Update, label: str = "", fromDate: datetime="", toDate: datetime="", mode: str='name'):
 
-    txt, pref = get_report(fromDate=fromDate,toDate=toDate,label=label,mode=mode)
+    txt, pref, week = get_report(fromDate=fromDate,toDate=toDate,label=label,mode=mode)
     telecmd, upms = get_tele_command(update)
     CONST = 4090
     ot=0
     do=CONST
-    text = pref +BR+ txt
+    text = pref +BR+ txt if mode != 'week' else "Недельная сводка"+BR+week
+
     media_dir = Path(__file__).resolve().parent.parent.parent.parent.joinpath('downloads')
     if not os.path.exists(media_dir):
       os.mkdir(media_dir)
-    # Вывод в файл XLSX
+    # Вывод в файл XLSX -----------------------------------------
     if mode=='xlsx':
       wb = Workbook() # creates a workbook object.
       ws = wb.active # creates a worksheet object.
@@ -317,21 +330,26 @@ def put_report(update: Update, label: str = "", fromDate: datetime="", toDate: d
       ws.append([f"{outlist[2]}"])
       
       ws.append(["Дата","ФИО", "Дата UTC", "Мероприятия"])
-
+      head = ""
       for row in outlist[3:-1]:
-        #print(row,type(row))
         if row !='':
-          ws.append(['','','',row]) # adds values to cells, each list is a new row.
+          if head=="":
+             head=row
+             continue
+          else:
+            ws.append([f'{head.split(" ")[1]}',f'{head.split(" ")[0]}',f'{head.split(" ")[2]}',row])
+            head=""
+
       ws.column_dimensions.__getitem__("A").width = "15"
-      ws.column_dimensions.__getitem__("B").width = "35"
-      ws.column_dimensions.__getitem__("C").width = "15"
+      ws.column_dimensions.__getitem__("B").width = "20"
+      ws.column_dimensions.__getitem__("C").width = "20"
       ws.column_dimensions.__getitem__("D").width = "90"
       ws.freeze_panes="B3"
       _file = os.path.join(media_dir, f'{telecmd[1:-1]}_{upms.chat.id}.xlsx')
       wb.save(_file) # save to excel file.
       upms.reply_document(open(_file, 'rb'))
     
-    # Вывод в текстовый файл
+    # Вывод в текстовый файл -----------------------------------------
     elif mode=='txt':
       lines = text.split(BR)
       _file = os.path.join(media_dir, f'{telecmd[1:-1]}_{upms.chat.id}.txt')
@@ -343,7 +361,7 @@ def put_report(update: Update, label: str = "", fromDate: datetime="", toDate: d
       #for row in txt.split(BR):
       #  print(row)
 
-    # вывод в цикле текстом
+    # вывод в цикле текстом  -----------------------------------------
     else:
       while True:
         upms.reply_text(
