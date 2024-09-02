@@ -130,7 +130,8 @@ def get_open_issues(url: str,
                     due_date: str = 'month') -> tuple[int, Any]:
   ret=""
   errno = "code.CODE_GITLAB_GET_ISSUE_OK"
-  _url='{0:s}?labels={1:s}&scope={2:s}&state={3:s}&due_date={4:s}&per_page=100'.format(GITLAB_URL, labels, scope, state, due_date)
+  #_url='{0:s}?labels={1:s}&scope={2:s}&state={3:s}&due_date={4:s}&per_page=100'.format(GITLAB_URL, labels, scope, state, due_date)
+  _url='{0:s}?labels={1:s}&scope={2:s}&per_page=100'.format(GITLAB_URL, labels, scope, state, due_date)
   headers = {
         #'Authorization': 'Bearer {0:s}'.format(ACCESS_TOKEN),
         'PRIVATE-TOKEN': ACCESS_TOKEN,
