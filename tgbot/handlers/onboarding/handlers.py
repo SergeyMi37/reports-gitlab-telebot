@@ -10,7 +10,7 @@ from users.models import User
 from tgbot.handlers.onboarding.keyboards import make_keyboard_for_start_command
 from tgbot.handlers.admin.static_text import BR
 
-from tgbot.handlers.broadcast_message.static_text import reports_wrong_format
+from tgbot.handlers.broadcast_message.static_text import reports_wrong_format, proj_en, proj_ru
 
 def command_help(update: Update, context: CallbackContext) -> None:
     u, created = User.get_user_and_created(update, context)
@@ -23,17 +23,17 @@ def command_help(update: Update, context: CallbackContext) -> None:
     text += BR+'/daily: Отчет за ЛРПО ежедневный по меткам "Табель"'
     text += BR+'/yesterday: Отчет за ЛРПО вчерашний по меткам "Табель"'
     text += BR
-    if "Рейтинг" in u.roles or "All" in u.roles:
-        text += BR+'/yesterday_rating: Отчет за вчера по метке "Рейтинг"'
-        text += BR+'/daily_rating: Отчет за сегодня по метке "Рейтинг"'
-        text += BR+'/daily_rating_noname: Отчет ежедневный по метке "Рейтинг" обезличенный'
-        text += BR+'/weekly_rating: Отчет еженедельный по первой части $"'
-    text += BR
-    if "ВПР" in u.roles or "All" in u.roles:
-        text += BR+'/yesterday_vpr: Отчет за вчера по метке "ВПР"'
-        text += BR+'/daily_vpr: Отчет за сегодня по метке "ВПР"'
-        text += BR+'/daily_vpr_noname: Отчет ежедневный по метке "ВПР" обезличенный'
-        text += BR+'/weekly_vpr: Отчет еженедельный по первой части $'
+    _i = 0
+    for _ru in proj_ru.split(','):
+        if _ru in u.roles or "All" in u.roles:
+            _en = proj_en.split(',')[_i]
+            text += BR+f'/yesterday_{_en}: Отчет за вчера по метке "{_ru}"'
+            text += BR+f'/daily_{_en}: Отчет за сегодня по метке "{_ru}"'
+            text += BR+f'/daily_{_en}_noname: Отчет ежедневный по метке "{_ru}" обезличенный'
+            text += BR+f'/weekly_{_en}: Отчет еженедельный по первой части $"'
+        _i += 1
+        text += BR
+
     text += BR
     text += BR + reports_wrong_format
     #text += BR+'/ask_location: Отправить локацию 📍'

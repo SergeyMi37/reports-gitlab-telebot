@@ -9,7 +9,7 @@ from telegram.ext import (
 
 from dtb.settings import DEBUG
 from tgbot.handlers.broadcast_message.manage_data import CONFIRM_DECLINE_BROADCAST
-from tgbot.handlers.broadcast_message.static_text import broadcast_command,reports_command
+from tgbot.handlers.broadcast_message.static_text import broadcast_command,reports_command,proj_en
 from tgbot.handlers.onboarding.manage_data import SECRET_LEVEL_BUTTON
 
 from tgbot.handlers.utils import files, error
@@ -31,15 +31,11 @@ def setup_dispatcher(dp):
     dp.add_handler(CommandHandler("daily", reports_gitlab.command_daily)) 
     dp.add_handler(CommandHandler("yesterday", reports_gitlab.command_yesterday)) 
 
-    dp.add_handler(CommandHandler("daily_rating_noname", reports_gitlab.command_daily_rating_noname)) 
-    dp.add_handler(CommandHandler("daily_rating", reports_gitlab.command_daily_rating)) 
-    dp.add_handler(CommandHandler("yesterday_rating", reports_gitlab.command_daily_rating)) 
-    dp.add_handler(CommandHandler("weekly_rating", reports_gitlab.command_weekly_rating)) 
-
-    dp.add_handler(CommandHandler("daily_vpr_noname", reports_gitlab.command_daily_rating_noname)) 
-    dp.add_handler(CommandHandler("daily_vpr", reports_gitlab.command_daily_rating)) 
-    dp.add_handler(CommandHandler("yesterday_vpr", reports_gitlab.command_daily_rating)) 
-    dp.add_handler(CommandHandler("weekly_vpr", reports_gitlab.command_weekly_rating)) 
+    for _en in proj_en.split(','):
+        dp.add_handler(CommandHandler(f"daily_{_en}_noname", reports_gitlab.command_daily_rating_noname)) 
+        dp.add_handler(CommandHandler(f"daily_{_en}", reports_gitlab.command_daily_rating)) 
+        dp.add_handler(CommandHandler(f"yesterday_{_en}", reports_gitlab.command_daily_rating)) 
+        dp.add_handler(CommandHandler(f"weekly_{_en}", reports_gitlab.command_weekly_rating)) 
 
     # admin commands
     dp.add_handler(CommandHandler("admin", admin_handlers.admin))

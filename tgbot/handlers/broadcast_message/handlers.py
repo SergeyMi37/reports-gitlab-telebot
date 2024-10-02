@@ -12,7 +12,7 @@ from .static_text import broadcast_command, broadcast_wrong_format, broadcast_no
 from users.models import User
 from users.tasks import broadcast_message
 from datetime import datetime, timedelta
-from tgbot.handlers.admin.reports_gitlab import put_report, get_tele_command
+from tgbot.handlers.admin.reports_gitlab import put_report, get_tele_command, lab_replay
 import os
 GITLAB_LABELS = os.getenv('GITLAB_LABELS')
 
@@ -48,7 +48,9 @@ def reports(update: Update, context: CallbackContext):
             lbl=GITLAB_LABELS
             try:
                 lb = par.split("labels_")[1] #.split("_")[0:-1]
-                lbl=lb.replace("rating","Рейтинг").replace("vpr","ВПР").replace("tabel","Табель").replace("_",",")
+                #lbl=lb.replace("rating","Рейтинг").replace("vpr","ВПР").replace("tabel","Табель").replace("_",",")
+                lbl = lab_replay(lb,"en_ru")
+                print("---====-en_ru-",lb,lbl)
             except Exception as err:
                 print("---err-lbl-",err)
             fda = f'{fd[0:4]}-{fd[4:6]}-{fd[6:8]}'

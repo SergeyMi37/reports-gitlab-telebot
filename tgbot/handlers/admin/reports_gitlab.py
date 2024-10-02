@@ -19,6 +19,7 @@ from datetime import datetime, timedelta
 import requests
 import json
 from tgbot.handlers.admin import static_text
+from tgbot.handlers.broadcast_message.static_text import proj_en, proj_ru
 from openpyxl import Workbook
 
 CERT_FILE = os.getenv('CERT_FILE')
@@ -58,8 +59,30 @@ def command_daily(update: Update, context: CallbackContext, reportDate = '' ) ->
     labels = GITLAB_LABELS
     put_report(update=update, fromDate=fromDate,label=labels)
 
-def command_daily_vpr_noname(update: Update, context: CallbackContext) -> None:
-  command_daily_rating_noname(update, context,lab = "ВПР")
+def lab_replay(lb: str, direct: str):
+  _i=0
+  if direct=='ru_en':
+    for _ru in proj_ru.split(","):
+      lb=lb.replace(_ru, proj_en.split(",")[_i])
+      _i += 1
+    lb=lb.replace("Табель","tabel").replace(",","_")
+  else:
+    for _en in proj_en.split(","):
+      lb=lb.replace(_en, proj_ru.split(",")[_i])
+      _i += 1
+    lb=lb.replace("tabel","Табель").replace("_",",")
+  return lb
+  
+def get_lab(cmdmess: str):
+    lab = "Рейтинг" 
+    _i=0
+    for _en in proj_en.split(","):
+      #if update.message.text=='/daily_rating_noname' else 'ВПР'
+      if f'_{_en}' in cmdmess:
+        lab =  proj_ru.split(",")[_i]
+        break
+      _i += 1
+    return lab
 
 def command_daily_rating_noname(update: Update, context: CallbackContext,lab = "") -> None:
     u = User.get_user(update, context)
@@ -67,7 +90,7 @@ def command_daily_rating_noname(update: Update, context: CallbackContext,lab = "
         update.message.reply_text(static_text.only_for_admins)
         return
     fromDate=datetime.today().date()
-    lab = "Рейтинг" if update.message.text=='/daily_rating_noname' else 'ВПР'
+    lab = get_lab(update.message.text)
     labels = GITLAB_LABELS + "," + lab
     put_report(update=update, fromDate=fromDate,label=labels,mode="noname")
 
@@ -78,7 +101,7 @@ def command_daily_rating(update: Update, context: CallbackContext,lab = "") -> N
         return
     
     fromDate = datetime.today().date() if 'daily_' in update.message.text else (datetime.now() + timedelta(days=-1)).date()
-    lab = "Рейтинг" if '_rating' in update.message.text else 'ВПР'
+    lab = get_lab(update.message.text)
     labels = GITLAB_LABELS + ","+lab
     put_report(update=update, fromDate=fromDate,label=labels)
     
@@ -89,7 +112,7 @@ def command_weekly_rating(update: Update, context: CallbackContext) -> None:
     if not u.is_admin:
         update.message.reply_text(static_text.only_for_admins)
         return
-    lab = "Рейтинг" if '_rating' in update.message.text else 'ВПР'
+    lab = get_lab(update.message.text)
     labels = GITLAB_LABELS + ","+lab
     put_report(update=update,fromDate=fromDate,toDate=toDate,label=labels,mode='weekly')
 
@@ -288,7 +311,9 @@ def get_report(label: str = "Табель", fromDate: datetime="", toDate: datet
     #prefix = f"<pre>/reports date:{fromDate}:{toDate} mode:{mode} labels:{label}</pre>" if pref=='' else pref
     fd=str(fromDate).replace("-","")
     td=str(toDate).replace("-","")
-    lb=label.replace("Рейтинг","rating").replace("ВПР","vpr").replace("Табель","tabel").replace(",","_")
+    #lb=label.replace("Рейтинг","rating").replace("ВПР","vpr").replace("Табель","tabel").replace(",","_")
+    lb = lab_replay(label,"ru_en")
+    print("---====-ru_en-",label,lb)
     prefix = f"/reports_date_{fd}_{td}_mode_{mode}_labels_{lb}" if pref=='' else pref
     
     errno, answer = get_issues_id(GITLAB_URL,label)

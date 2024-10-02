@@ -1,3 +1,5 @@
+import os
+
 reports_command = '/reports'
 reports_no_access = "Извините, у вас нет доступа к этой функции."
 reports_wrong_format = f'{reports_command} После ключевого слова через пробел нужно ввести параметры отчета.\n' \
@@ -26,3 +28,5 @@ decline_broadcast = "Decline ❌"
 message_is_sent = "Message is sent ✅"
 declined_message_broadcasting = "Message broadcasting is declined ❌"
 error_with_html = "Can't parse your text in <code>HTML</code> style. Reason: \n{reason}"
+proj_ru = os.getenv('PROJ_RU') #'Рейтинг,ВПР,ШТАТЫ,Рубеж,СайтРосгвардии,ПаспортТерО,Валькирия,Поток,ЦУВР,Наука'
+proj_en = os.getenv('PROJ_EN') #'rating,vpr,staty,rubezh,siteRG,pasportTerO,valkiria,potok,cuvr,nauka'
