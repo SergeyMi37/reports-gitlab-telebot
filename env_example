@@ -11,3 +11,6 @@ ACCESS_TOKEN = '<ACCESS_TOKEN>'
 GRAPHQL_URL = 'https://gitlab.com/api/graphql'
 GITLAB_URL = 'https://gitlab.com/api/v4/projects/2344904121/issues'
 GITLAB_LABELS = 'Теst'
+
+PROJ_RU = 'Периметр,Ветер,Спектр'
+PROJ_EN = 'perimetr,wind,spectr'
