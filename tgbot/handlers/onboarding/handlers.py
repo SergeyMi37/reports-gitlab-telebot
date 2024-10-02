@@ -31,8 +31,8 @@ def command_help(update: Update, context: CallbackContext) -> None:
             text += BR+f'/daily_{_en}: Отчет за сегодня по метке "{_ru}"'
             text += BR+f'/daily_{_en}_noname: Отчет ежедневный по метке "{_ru}" обезличенный'
             text += BR+f'/weekly_{_en}: Отчет еженедельный по первой части $"'
+            text += BR
         _i += 1
-        text += BR
 
     text += BR
     text += BR + reports_wrong_format
