@@ -77,7 +77,6 @@ def get_lab(cmdmess: str):
     lab = "Рейтинг" 
     _i=0
     for _en in proj_en.split(","):
-      #if update.message.text=='/daily_rating_noname' else 'ВПР'
       if f'_{_en}' in cmdmess:
         lab =  proj_ru.split(",")[_i]
         break
