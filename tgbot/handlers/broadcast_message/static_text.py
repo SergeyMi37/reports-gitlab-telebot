@@ -28,5 +28,7 @@ decline_broadcast = "Decline ❌"
 message_is_sent = "Message is sent ✅"
 declined_message_broadcasting = "Message broadcasting is declined ❌"
 error_with_html = "Can't parse your text in <code>HTML</code> style. Reason: \n{reason}"
-proj_ru = os.getenv('PROJ_RU') #'Рейтинг,ВПР,ШТАТЫ,Рубеж,СайтРосгвардии,ПаспортТерО,Валькирия,Поток,ЦУВР,Наука'
-proj_en = os.getenv('PROJ_EN') #'rating,vpr,staty,rubezh,siteRG,pasportTerO,valkiria,potok,cuvr,nauka'
+proj_ru = os.getenv('PROJ_RU')
+proj_en = os.getenv('PROJ_EN')
+proj_labels = os.getenv('GITLAB_LABELS')
+

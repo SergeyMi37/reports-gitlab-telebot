@@ -14,3 +14,10 @@ GITLAB_LABELS = 'Теst'
 
 PROJ_RU = 'Периметр,Ветер,Спектр'
 PROJ_EN = 'perimetr,wind,spectr'
+
+
+# Адреса серверов IRIS с Web портами для выполнения запросов к Apptools-Admin пакету /apptoolsrest/products
+URL_TEST2 = http://UserName:UserPassword@iris-test:52773/USER #
+URL_DEMO = https://superuser:SYS@appadmin.demo.community.intersystems.com/apptoolsrest/products/
+# Custom Commands
+CC_DEMO_USERViewLog = https://superuser:SYS@appadmin.demo.community.intersystems.com/apptoolsrest/custom-task/spgz/run&class=apptools.core.rest&met=GetLastLogs&par=5

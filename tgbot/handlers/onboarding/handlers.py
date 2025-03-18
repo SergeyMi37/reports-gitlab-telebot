@@ -10,7 +10,7 @@ from users.models import User
 from tgbot.handlers.onboarding.keyboards import make_keyboard_for_start_command
 from tgbot.handlers.admin.static_text import BR
 
-from tgbot.handlers.broadcast_message.static_text import reports_wrong_format, proj_en, proj_ru
+from tgbot.handlers.broadcast_message.static_text import reports_wrong_format, proj_en, proj_ru, proj_labels
 
 def command_help(update: Update, context: CallbackContext) -> None:
     u, created = User.get_user_and_created(update, context)
@@ -19,9 +19,15 @@ def command_help(update: Update, context: CallbackContext) -> None:
         text = static_text.start_created.format(first_name=u.first_name)
     else:
         text = static_text.start_not_created.format(first_name=u.first_name)
-    text += BR+'/start: Кнопки ссылок на проект "Табель"'
-    text += BR+'/daily: Отчет за ЛРПО ежедневный по меткам "Табель"'
-    text += BR+'/yesterday: Отчет за ЛРПО вчерашний по меткам "Табель"'
+
+    text += BR+'/start: Кнопки ссылок'
+    # Если есть доступ к плпгину IRIS
+    text += BR+'/servers: Смотреть статус всех серверов IRIS'
+    text += BR+'/s_TEST: Смотреть продукции сервера TEST'
+    text += BR
+    # Если есть доступ к плагину Issue Time tracking
+    text += BR+'/daily: Отчет ежедневный по меткам "{proj_labels}"'
+    text += BR+'/yesterday: Отчет вчерашний по меткам "{proj_labels}"'
     text += BR
     _i = 0
     for _ru in proj_ru.split(','):
@@ -36,8 +42,9 @@ def command_help(update: Update, context: CallbackContext) -> None:
 
     text += BR
     text += BR + reports_wrong_format
-    #text += BR+'/ask_location: Отправить локацию 📍'
-    #text += BR+'/export_users: Экспорт users.csv 👥'
+    
+    text += BR+'/ask_location: Отправить локацию 📍'
+    text += BR+'/export_users: Экспорт users.csv 👥'
     text += BR+'/help: Перечень команд'
     context.bot.send_message(
         chat_id=u.user_id,

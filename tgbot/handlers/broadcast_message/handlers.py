@@ -1,7 +1,7 @@
 import re
 
 import telegram
-from telegram import Update
+from telegram import ParseMode, Update
 from telegram.ext import CallbackContext
 
 from dtb.settings import DEBUG
@@ -13,8 +13,46 @@ from users.models import User
 from users.tasks import broadcast_message
 from datetime import datetime, timedelta
 from tgbot.handlers.admin.reports_gitlab import put_report, get_tele_command, lab_replay
+from tgbot.handlers.admin.servers_iris import command_server
 import os
 GITLAB_LABELS = os.getenv('GITLAB_LABELS')
+
+def is_permiss(user: User,roleslist: list):
+    '''
+    Проверить права доступа по спискам ролей
+    '''
+    if user.is_superadmin:
+        return True
+    elif user.is_admin:
+        if user.roles:
+            _rol = user.roles.split(",")
+            if set(roleslist).intersection(_rol):
+                print('---',_rol)
+                return True
+    return False
+
+def server(update: Update, context: CallbackContext):
+    """ Работа с серверами ИРИС """
+    u = User.get_user(update, context)
+    telecmd, upms = get_tele_command(update)
+    if not is_permiss(u,['iris']):
+        upms.reply_text(
+            text="В этом режиме можно работать только после одобрения Администратора",
+        )
+    else:
+        if telecmd == "/s":
+            # user typed only command without text for the message.
+            upms.reply_text(
+                text="Команду нужно ввести в правильном формате, наприме /s_TEST_SYS",
+                parse_mode=telegram.ParseMode.HTML,
+            )
+            return
+        cmd = upms.text.replace(f'/s_', '')+"_____" # Добавим подчеркивание чтоб не ломалось по несуществующему элементу списка _
+        upms.reply_text(
+          text = command_server(cmd),
+          parse_mode=ParseMode.HTML,
+          disable_web_page_preview=True,
+          )
 
 def reports(update: Update, context: CallbackContext):
     """ Reports."""
