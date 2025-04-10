@@ -6,7 +6,7 @@ import dj_database_url
 import dotenv
 
 from pathlib import Path
-'''
+
 from dynaconf import Dynaconf
 from dynaconf.validator import Validator
 settings = Dynaconf(
@@ -38,7 +38,8 @@ settings = Dynaconf(
         Validator("REDIS_MAX_CONNECTIONS", default=20),
     ],
 )
-'''
+print('=========',settings.TELEGRAM_BOT_TOKEN)
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 

@@ -8,6 +8,25 @@ from langchain_gigachat.chat_models import GigaChat
 import os
 GIGA_TOKEN = os.getenv('GIGA_CHAT')
 
+def ask_giga(prompt):
+    
+    giga = GigaChat(
+        # Для авторизации запросов используйте ключ, полученный в проекте GigaChat API
+        credentials=GIGA_TOKEN,
+        verify_ssl_certs=False,
+    )
+    messages = [
+        SystemMessage(
+            content="Ты бот-собеседник, который помогает пользователю провести время с пользой."
+        )
+    ]
+    messages.append(HumanMessage(content=prompt))
+    res = giga.invoke(messages)
+    messages.append(res)
+    return res.content
+
+
+
 '''
 """Пример работы с чатом"""
 from gigachat import GigaChat
@@ -34,20 +53,18 @@ with GigaChat(credentials=..., verify_ssl_certs=False) as giga:
         print("Bot: ", response.choices[0].message.content)
 '''
 
-giga = GigaChat(
-    # Для авторизации запросов используйте ключ, полученный в проекте GigaChat API
-    credentials=GIGA_TOKEN,
-    verify_ssl_certs=False,
-)
-messages = [
-    SystemMessage(
-        content="Ты бот-собеседник, который помогает пользователю провести время с пользой."
-    )
-]
-
-
 # Пример использования  python tgbot/handlers/admin/giga_chat.py 
 if __name__ == "__main__":
+    giga = GigaChat(
+        # Для авторизации запросов используйте ключ, полученный в проекте GigaChat API
+        credentials=GIGA_TOKEN,
+        verify_ssl_certs=False,
+    )
+    messages = [
+        SystemMessage(
+            content="Ты бот-собеседник, который помогает пользователю провести время с пользой."
+        )
+    ]
     print('--------',GIGA_TOKEN,"- Что бы выйти - введи 'пока'")
     while(True):
         user_input = input("Пользователь: ")

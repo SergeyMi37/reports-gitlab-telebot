@@ -19,7 +19,7 @@ from tgbot.handlers.location import handlers as location_handlers
 from tgbot.handlers.onboarding import handlers as onboarding_handlers
 from tgbot.handlers.broadcast_message import handlers as broadcast_handlers
 from tgbot.main import bot
-
+from tgbot.handlers.admin.giga_chat import ask_giga
 
 def setup_dispatcher(dp):
     """
@@ -107,8 +107,9 @@ def handle_text_message(update, context):
     text = update.message.text
     # Логика обработки сообщения
     print(f"User {user.first_name} sent message: {text}")
+    resp = ask_giga(text)
     # Ответ пользователю
-    update.message.reply_text(f"Принял ваше сообщение: '{text}'")
+    update.message.reply_text(f"Ответ Гиги: '{resp}'")
 
 
 n_workers = 0 if DEBUG else 4
