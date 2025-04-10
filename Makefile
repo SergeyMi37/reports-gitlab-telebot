@@ -1,3 +1,4 @@
+.PHONY: push ps build start stop_bot bash logs_celery drop rm_and_clean_containers rm_and_clean_images
 CONTAINER_NAME = web
 
 ps: ## Смотреть список запущенных контнейнеров всего, в текущем проекте и именв
@@ -28,6 +29,7 @@ rm_and_clean_images:  ## Удалить и очистить все образы
 	docker rmi $$(docker images -a -q) && docker system prune -f
 
 push:
+	git remote -v && \
 	@read -p "Введите комментарий: " COMMENT; \
 	git add * && \
 	git commit -am "$$COMMENT" && \

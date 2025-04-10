@@ -62,7 +62,7 @@ def broadcast_gitlb_daily_message(
 
     entities_ = from_celery_entities_to_entities(entities)
     reply_markup_ = from_celery_markup_to_markup(reply_markup)
-    print('--- user_ids ',type(user_ids),user_ids[0])
+    logger.info(f"Получим ид пользователей : '{user_ids[0]}")
     res = ''
     '''  Если есть условие в первом поле UserId, проверяем на его сработку, есть да, то смотрим для каких Ролей, эта сработка
     if 'Condition(' in user_ids[0]: # Получение условия
@@ -80,7 +80,8 @@ def broadcast_gitlb_daily_message(
 
     if 'Roles(' in user_ids[0]: # Получение пользователей по ролям
         roles = user_ids[0].split('Roles(')[1].split(')')[0].split(",") # Все роли через запятую в первом ИД пользователя
-        print('--- Роли, которые должны быть у пользователей, которым посылать сообщения ',roles)
+        #print('--- Роли, которые должны быть у пользователей, которым посылать сообщения ',roles)
+        logger.info(f"Роли, которые должны быть у пользователей, которым посылать сообщения : '{roles}")
         _user_ids = list(User.objects.all().values_list('user_id', flat=True)) # Получим всех реальных пользователей в джанге
         for id in _user_ids:
             u = User.get_user_by_username_or_user_id(id)
