@@ -38,7 +38,7 @@ settings = Dynaconf(
         Validator("REDIS_MAX_CONNECTIONS", default=20),
     ],
 )
-print('=========',settings.TELEGRAM_BOT_TOKEN)
+print('=========',settings.HOMEPATH)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
