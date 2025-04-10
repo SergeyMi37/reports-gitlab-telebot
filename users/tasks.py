@@ -57,7 +57,7 @@ def broadcast_gitlb_daily_message(
     sleep_between: float = 0.4,
     parse_mode=telegram.ParseMode.HTML,
 ) -> None:
-    """ Используется для трансляции сообщений пользователям в соответсвии с их ролями. """
+    """ Используется для трансляции сообщений пользователям в соответсвии с их ролями."""
     logger.info(f"Собираюсь отправить сообщение: '{text}' для {len(user_ids)} пользователей users")
 
     entities_ = from_celery_entities_to_entities(entities)

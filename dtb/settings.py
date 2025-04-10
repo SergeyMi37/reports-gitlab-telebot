@@ -131,7 +131,7 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
+# Static files (CSS, JavaScript, Images) 
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 #STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # https://stackoverflow.com/questions/63783517/django-heroku-raise-valueerrormissing-staticfiles-manifest-entry-for-s-c

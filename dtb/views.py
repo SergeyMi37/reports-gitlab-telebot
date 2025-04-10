@@ -38,7 +38,7 @@ class TelegramBotWebhookView(View):
         # e.g. remove buttons, typing event
         return JsonResponse({"ok": "POST request processed"})
 
-    def get(self, request, *args, **kwargs):  # for debug
+    def get(self, request, *args, **kwargs):  # for debug 
         return JsonResponse({"ok": "Get request received! But nothing done"})
 
 # Если есть доступ к плагину IRIS

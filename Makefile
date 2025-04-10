@@ -1,7 +1,7 @@
 .PHONY: push ps build start stop_bot bash logs_celery drop rm_and_clean_containers rm_and_clean_images
 CONTAINER_NAME = web
 
-ps: ## Смотреть список запущенных контнейнеров всего, в текущем проекте и именв
+ps: ## Смотреть список запущенных контнейнеров всего, в текущем проекте и именв 
 	docker ps && docker-compose ps && docker-compose ps --services
 
 build: ## Собрать images Docker
