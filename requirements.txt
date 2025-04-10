@@ -3,6 +3,7 @@ requests
 python-dotenv
 openpyxl
 ipython==8.5.0  # enhanced python interpreter
+dynaconf>=3.2.7
 
 # Django
 django==3.2.9

@@ -95,7 +95,7 @@ def save_file_id(update: Update, context: CallbackContext) -> None:
                 os.mkdir(_dir)
             _file = os.path.join(_dir, f'{file_name}')
             file.download(custom_path = _file)
-            update.message.reply_text(f"Файл успешно сохранён.")
+            update.message.reply_text(f"Файл успешно сохранён.{_file}")
         except Exception as e:
             update.message.reply_text(f"Произошла ошибка при скачивании файла: {e}")
 

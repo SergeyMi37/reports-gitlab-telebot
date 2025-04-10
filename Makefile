@@ -37,3 +37,9 @@ push:
 	git add * && \
 	git commit -am "$$COMMENT" && \
 	git push
+
+run: ## Dev
+	export ENV_FOR_DYNACONF=dev
+
+run_prod: # Prod
+	export ENV_FOR_DYNACONF=prod
