@@ -195,7 +195,7 @@ def command_server(cmd: str) -> None:
     return result
 
 def get_custom_commands(servname: str, mode: str) -> None:
-    #url = os.getenv('CC_SERPAN_TEMP_VIEW') # CC_SERPAN_TEMP_VIEW = http://m
+    #url = os.getenv('CC_SERPAN_TEMP_VIEW') # CC_SERPAN_TEMP_VIEW = http://m   
     result=''
     for key in os.environ:
       if f"CC_{servname}_" in key:
