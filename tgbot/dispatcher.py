@@ -76,6 +76,14 @@ def setup_dispatcher(dp):
         Filters.animation, files.show_file_id,
     ))
 
+    #dp.add_handler(MessageHandler(        Filters.document.txt, files.save_file_id,    ))
+    dp.add_handler(MessageHandler(
+        Filters.document, files.save_file_id,
+    ))
+
+    # Обработка всех текстовых сообщений
+    dp.add_handler(MessageHandler(Filters.text & ~Filters.command, handle_text_message))
+
     # handling errors
     dp.add_error_handler(error.send_stacktrace_to_tg_chat)
 
@@ -92,6 +100,15 @@ def setup_dispatcher(dp):
     # ))
 
     return dp
+
+# Функция-обработчик для текстовых сообщений
+def handle_text_message(update, context):
+    user = update.effective_user
+    text = update.message.text
+    # Логика обработки сообщения
+    print(f"User {user.first_name} sent message: {text}")
+    # Ответ пользователю
+    update.message.reply_text(f"Принял ваше сообщение: '{text}'")
 
 
 n_workers = 0 if DEBUG else 4

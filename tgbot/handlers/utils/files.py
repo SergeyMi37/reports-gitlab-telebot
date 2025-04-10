@@ -38,11 +38,16 @@ from typing import Dict
 import telegram
 from telegram import Update
 from telegram.ext import CallbackContext
+import os
+from pathlib import Path
 
 from users.models import User
 
 ALL_TG_FILE_TYPES = ["document", "video_note", "voice", "sticker", "audio", "video", "animation", "photo"]
 
+media_dir = Path(__file__).resolve().parent.parent.parent.parent.joinpath('downloads')
+if not os.path.exists(media_dir):
+    os.mkdir(media_dir)
 
 def _get_file_id(m: Dict) -> str:
     """ extract file_id from message (and file type?) """
@@ -69,3 +74,28 @@ def show_file_id(update: Update, context: CallbackContext) -> None:
             parse_mode=telegram.ParseMode.HTML,
             reply_to_message_id=message_id
         )
+
+def save_file_id(update: Update, context: CallbackContext) -> None:
+    """ Returns file_id of the attached file/media and save"""
+    u = User.get_user(update, context)
+
+    if u.is_admin:
+        update_json = update.to_dict()
+        #print(update_json)
+        file_id = _get_file_id(update_json["message"])
+        #message_id = update_json["message"]["message_id"]
+        cid = str(update_json["message"]["chat"]['id'])
+        file_name = update_json["message"]["document"]['file_name']
+        bot = context.bot
+        try:
+            file = bot.get_file(file_id)
+            #print(file,file_id,message_id)
+            _dir = os.path.join(media_dir, cid)
+            if not os.path.exists(_dir):
+                os.mkdir(_dir)
+            _file = os.path.join(_dir, f'{file_name}')
+            file.download(custom_path = _file)
+            update.message.reply_text(f"Файл успешно сохранён.")
+        except Exception as e:
+            update.message.reply_text(f"Произошла ошибка при скачивании файла: {e}")
+

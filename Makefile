@@ -4,13 +4,19 @@ CONTAINER_NAME = web
 ps: ## Смотреть список запущенных контнейнеров всего, в текущем проекте и именв 
 	docker ps && docker-compose ps && docker-compose ps --services
 
-build: ## Собрать images Docker
-	docker-compose build
-
-start: ## Запустить контейнеры Docker
+build: ## Собрать images Docker и запустить   # docker-compose build
 	docker-compose up --build -d
 
-stop_bot: ## Остановить контейнер bot для отладки
+drop: ## Остановить и удалить контейнеры Docker
+	docker-compose down -v
+
+start: ## Запустить собранный контейнеры Docker
+	docker-compose up -d
+
+stop: ## Остановить контейнеры Docker
+	docker-compose stop
+
+stop_start_bot: ## Остановить контейнер bot для отладки запустить код
 	docker-compose stop bot && python run_polling.py 
 
 bash: ## Открыть оболочку bash в контейнере web, для создания суперпользователя 
@@ -18,9 +24,6 @@ bash: ## Открыть оболочку bash в контейнере web, дл�
 
 logs_celery: ## смотреть протоколы в контейнере celery 
 	docker-compose logs -f celery
-
-drop: ## Остановить и удалить контейнеры Docker
-	docker-compose down -v
 
 rm_and_clean_containers:  ## Остановить, удалить и очистить все контейнеры
 	docker stop $$(docker ps -a -q) &&  docker rm $$(docker ps -a -q) && docker system prune -f

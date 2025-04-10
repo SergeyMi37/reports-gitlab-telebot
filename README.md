@@ -57,13 +57,6 @@ If you want to open Django admin panel which will be located on http://localhost
 ``` bash
 python manage.py runserver
 ```
-### https://the-bosha.ru/2016/06/29/django-delaem-damp-bazy-dannykh-i-vosstanavlivaem-iz-nego-s-dumpdata-i-loaddata/
-### https://realpython.com/django-pytest-fixtures/#fixtures-in-django
-python manage.py loaddata db-init-param.json
-python manage.py dumpdata --exclude auth.permission --exclude contenttypes --indent 2 > db-init-param.json
-python manage.py dumpdata --exclude auth.permission --exclude auth.user --exclude contenttypes --exclude auth.group --exclude admin.logentry --exclude sessions.session --indent 2 > db-init-param.json
-
-
 
 ## Run locally using docker-compose
 If you want just to run all the things locally, you can use Docker-compose which will start all containers for you.
