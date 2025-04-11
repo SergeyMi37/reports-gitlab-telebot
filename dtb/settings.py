@@ -9,6 +9,16 @@ from pathlib import Path
 
 from dynaconf import Dynaconf
 from dynaconf.validator import Validator
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+# Load env variables from file
+dotenv_file = BASE_DIR / ".env"
+if os.path.isfile(dotenv_file):
+    dotenv.load_dotenv(dotenv_file)
+
 settings = Dynaconf(
     envvar_prefix=False,
     environments=True,
@@ -23,32 +33,16 @@ settings = Dynaconf(
         Validator("LOG_FILE", default="logs.txt"),
         Validator("LOG_LEVEL", default="INFO"),
         Validator("MAX_SIZE_MB", default=10),
-        Validator("BACKUP_COUNT", default=5),
-        Validator("PRE_REGISTERED_LOGGERS", default=["uvicorn", "aiogram"]),
         Validator("DEFAULT_LANGUAGE", default="ru"),
         Validator("ALLOWED_LANGUAGES", default=["ru", "en"]),
-        Validator("ITEMS_PER_PAGE", default=5),
         Validator("TIMESTAMP_FORMAT", default="%H:%M %d.%m.%Y"),
         Validator("TIME_ZONE", default="Europe/Moscow"),
-        Validator("TRUNCATED_STRING_LENGTH", default=100),
-        Validator("TELEGRAM_BOT_TOKEN", must_exist=True),
+        Validator("TELEGRAM_TOKEN", must_exist=True),
         Validator("DB_URL", must_exist=True),
-        Validator("DB_NAME", default="taigram"),
-        Validator("REDIS_URL", default="redis://redis:6379/0"),
-        Validator("REDIS_MAX_CONNECTIONS", default=20),
+        
     ],
 )
-print('=========',settings.HOMEPATH)
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-
-# Load env variables from file
-dotenv_file = BASE_DIR / ".env"
-if os.path.isfile(dotenv_file):
-    dotenv.load_dotenv(dotenv_file)
-
+print('======== ENV_FOR_DYNACONF: ',settings.get("ENV_FOR_DYNACONF",""))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv(
@@ -192,10 +186,10 @@ CELERY_TASK_DEFAULT_QUEUE = 'default'
 
 
 # -----> TELEGRAM
-TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
+TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN",settings.get("TELEGRAM_TOKEN",None))
 if TELEGRAM_TOKEN is None:
     logging.error(
-        "Please provide TELEGRAM_TOKEN in .env file.\n"
+        "Please provide TELEGRAM_TOKEN in .env file or settings\settings.yaml.\n"
         "Example of .env file: https://github.com/ohld/django-telegram-bot/blob/main/.env_example"
     )
     sys.exit(1)

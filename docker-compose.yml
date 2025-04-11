@@ -10,6 +10,8 @@ services:
       dockerfile: LocalDockerfile
     container_name: dtb_django
     restart: always
+    environment:
+      ENV_FOR_DYNACONF: ${ENV_FOR_DYNACONF}
     command: bash -c "python manage.py migrate && python manage.py runserver --noreload 0.0.0.0:8000"
     volumes:
       - .:/code
@@ -23,6 +25,8 @@ services:
       dockerfile: LocalDockerfile
     container_name: dtb_bot
     restart: always
+    environment:
+      ENV_FOR_DYNACONF: ${ENV_FOR_DYNACONF}
     command: python run_polling.py
     env_file:
       - ./.env
@@ -34,6 +38,8 @@ services:
       dockerfile: LocalDockerfile
     container_name: dtb_celery
     restart: always
+    environment:
+      ENV_FOR_DYNACONF: ${ENV_FOR_DYNACONF}
     command: celery -A dtb worker --loglevel=INFO
     volumes:
       - .:/code
@@ -48,6 +54,8 @@ services:
       dockerfile: LocalDockerfile
     container_name: dtb_beat
     restart: always
+    environment:
+      ENV_FOR_DYNACONF: ${ENV_FOR_DYNACONF}
     command: celery -A dtb beat -l info --scheduler django_celery_beat.schedulers.DatabaseScheduler
     volumes:
       - .:/code
