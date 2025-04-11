@@ -43,6 +43,8 @@ settings = Dynaconf(
     ],
 )
 print('======== ENV_FOR_DYNACONF: ',settings.get("ENV_FOR_DYNACONF",""))
+plug=settings.get("PLUGINS")
+print('======== PLUGINS: ',type(plug))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv(
