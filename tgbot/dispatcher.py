@@ -9,7 +9,7 @@ from telegram.ext import (
 
 from dtb.settings import DEBUG
 from tgbot.handlers.broadcast_message.manage_data import CONFIRM_DECLINE_BROADCAST
-from tgbot.handlers.broadcast_message.static_text import broadcast_command,reports_command,proj_en
+from tgbot.handlers.broadcast_message.static_text import broadcast_command,reports_command
 from tgbot.handlers.onboarding.manage_data import SECRET_LEVEL_BUTTON
 
 from tgbot.handlers.utils import files, error
@@ -20,6 +20,8 @@ from tgbot.handlers.onboarding import handlers as onboarding_handlers
 from tgbot.handlers.broadcast_message import handlers as broadcast_handlers
 from tgbot.main import bot
 from tgbot.handlers.admin.giga_chat import ask_giga
+from tgbot.handlers.admin.reports_gitlab import PROJ_EN
+from tgbot.handlers.admin.servers_iris import plugins_iris
 
 def setup_dispatcher(dp):
     """
@@ -30,21 +32,22 @@ def setup_dispatcher(dp):
     dp.add_handler(CommandHandler("help", onboarding_handlers.command_help)) 
  
     # Если есть доступ к плагину IRIS
-    dp.add_handler(CommandHandler("servers", servers_iris.command_servers)) 
-    # Сервера ИРИС
-    dp.add_handler(
-        MessageHandler(Filters.regex(rf'^/s(/s)?.*'), broadcast_handlers.server)
-    )
+    if plugins_iris:
+        dp.add_handler(CommandHandler("servers", servers_iris.command_servers)) 
+        # Сервера ИРИС
+        dp.add_handler(
+            MessageHandler(Filters.regex(rf'^/s(/s)?.*'), broadcast_handlers.server)
+        )
    
     # Если есть доступ к плагину Issue Time tracking
-    dp.add_handler(CommandHandler("daily", reports_gitlab.command_daily)) 
-    dp.add_handler(CommandHandler("yesterday", reports_gitlab.command_yesterday)) 
-
-    for _en in proj_en.split(','):
-        dp.add_handler(CommandHandler(f"daily_{_en}_noname", reports_gitlab.command_daily_rating_noname)) 
-        dp.add_handler(CommandHandler(f"daily_{_en}", reports_gitlab.command_daily_rating)) 
-        dp.add_handler(CommandHandler(f"yesterday_{_en}", reports_gitlab.command_daily_rating)) 
-        dp.add_handler(CommandHandler(f"weekly_{_en}", reports_gitlab.command_weekly_rating)) 
+    if PROJ_EN:
+        dp.add_handler(CommandHandler("daily", reports_gitlab.command_daily)) 
+        dp.add_handler(CommandHandler("yesterday", reports_gitlab.command_yesterday)) 
+        for _en in PROJ_EN.split(','):
+            dp.add_handler(CommandHandler(f"daily_{_en}_noname", reports_gitlab.command_daily_rating_noname)) 
+            dp.add_handler(CommandHandler(f"daily_{_en}", reports_gitlab.command_daily_rating)) 
+            dp.add_handler(CommandHandler(f"yesterday_{_en}", reports_gitlab.command_daily_rating)) 
+            dp.add_handler(CommandHandler(f"weekly_{_en}", reports_gitlab.command_weekly_rating)) 
 
     # admin commands
     dp.add_handler(CommandHandler("admin", admin_handlers.admin))
@@ -106,9 +109,9 @@ def handle_text_message(update, context):
     user = update.effective_user
     text = update.message.text
     # Логика обработки сообщения
-    print(f"User {user.first_name} sent message: {text}")
     resp = ask_giga(text)
     # Ответ пользователю
+    print(f"User {user.first_name} На вопрос: {text}\n Получил ответ:{resp}")
     update.message.reply_text(f"Ответ Гиги: '{resp}'")
 
 

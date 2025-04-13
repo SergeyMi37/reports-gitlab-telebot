@@ -1,4 +1,5 @@
-#from datetime import timedelta
+# Plugin for reporting from servers IRIS
+# Name Plugin: IRIS
 
 from django.utils.timezone import now
 from telegram import ParseMode, Update
@@ -16,13 +17,19 @@ from typing import Any
 #import datetime
 from datetime import datetime, timedelta
 from urllib.parse import urlparse
-
+from dtb.settings import get_plugins
 import requests
 import json
 from tgbot.handlers.admin import static_text
 from openpyxl import Workbook
-
+from dtb.settings import logger
 TIMEOUT =25
+
+plugins_iris = get_plugins('IRIS')
+logger.info('-----plugins_iris-'+str(plugins_iris))
+#for key in plugins_iris:
+  #print('-- ',key,plugins_iris[key])
+
 
 def get_tele_command(update: Update) -> str:
    #print('---update:---',update)
@@ -41,15 +48,17 @@ def command_servers(update: Update, context: CallbackContext) -> None:
         update.message.reply_text(static_text.only_for_admins)
         return
     telecmd, upms = get_tele_command(update)
-    #url = os.getenv('URL_TEST20203')
+
     result=''
-    for key in os.environ:
+    for key in plugins_iris:
+    #for key in os.environ:
       if "URL_" in key:
         #print(key, '=>', os.environ[key])
         #result += key.split("URL_")[1]
         #Загрузить из сервиса результат
-        _u = os.environ[key]+'1'
+        #_u = os.environ[key]+'1'
         #print('---url---',_u )
+        _u = plugins_iris[key]+'1'
         err, resp = get_open(url=_u,timeout=TIMEOUT) # 0 - Только статус
         #print(err, resp) 
       
@@ -111,7 +120,8 @@ def command_server(cmd: str) -> None:
     Если "ИмяСервера___" выводить список продукций с количеством ошибок за 1 день
     Если "ИмяСервера_ИмяОбласти__" выводить список первых 20 ошибок с усеченным текстом
     '''
-    url = os.getenv(f'URL_{cmd.split("_")[0]}')
+    #url = os.getenv(f'URL_{cmd.split("_")[0]}')
+    url = plugins_iris.get(f'URL_{cmd.split("_")[0]}')
     result=''
     _servname = cmd.split("_")[0]
     if not url:
@@ -125,7 +135,8 @@ def command_server(cmd: str) -> None:
        _ns = cmd.split("_")[1] if cmd.split("_")[1].find('-')!=-1 else cmd.split("_")[1].replace("v","-")
        if _ns=='CC':
           cc = f'CC_{_servname}_{cmd.split("_")[2]}'
-          _urlcc = os.environ.get(cc, default=False)
+          #_urlcc = os.environ.get(cc, default=False)
+          _urlcc = plugins_iris.get(cc, default=False)
           if _urlcc:
              err, resp = get_open(url=_urlcc,timeout=TIMEOUT)
              print('---=-',err,type(resp), resp)
@@ -197,7 +208,8 @@ def command_server(cmd: str) -> None:
 def get_custom_commands(servname: str, mode: str) -> None:
     #url = os.getenv('CC_SERPAN_TEMP_VIEW') # CC_SERPAN_TEMP_VIEW = http://m   
     result=''
-    for key in os.environ:
+    #for key in os.environ:
+    for key in plugins_iris:
       if f"CC_{servname}_" in key:
         print(key, '=>', os.environ[key])
         if mode=="list":
@@ -205,7 +217,8 @@ def get_custom_commands(servname: str, mode: str) -> None:
         else:
           #result += key.split("URL_")[1]
           #Загрузить из сервиса результат
-          _u = os.environ[key]
+          #_u = os.environ[key]
+          _u = plugins_iris[key]
           print('-url-',_u )
           err, resp = get_open(url=_u,timeout=TIMEOUT) # 0 - Только статус
           print(err, resp)

@@ -1,3 +1,6 @@
+# Plugin for reporting from issue Gitlab
+# Name Plugin: GITLAB
+
 #from datetime import timedelta
 
 from django.utils.timezone import now
@@ -19,19 +22,21 @@ from datetime import datetime, timedelta
 import requests
 import json
 from tgbot.handlers.admin import static_text
-from tgbot.handlers.broadcast_message.static_text import proj_en, proj_ru
 from openpyxl import Workbook
+from dtb.settings import get_plugins
+from dtb.settings import logger
 
-CERT_FILE = os.getenv('CERT_FILE')
-CERT_KEY_FILE = os.getenv('CERT_KEY_FILE')
+plugins_gitlab = get_plugins('GITLAB')
+logger.info('-----plugins_gitlab-'+str(plugins_gitlab))
 
-ACCESS_TOKEN = os.getenv('ACCESS_TOKEN')
-GRAPHQL_URL = os.getenv('GRAPHQL_URL')
-GITLAB_URL = os.getenv('GITLAB_URL')
-GITLAB_LABELS = os.getenv('GITLAB_LABELS')
+ACCESS_TOKEN = plugins_gitlab.get('ACCESS_TOKEN')
+GRAPHQL_URL = plugins_gitlab.get('GRAPHQL_URL')
+GITLAB_URL = plugins_gitlab.get('GITLAB_URL')
+GITLAB_LABELS = plugins_gitlab.get('GITLAB_LABELS')
+PROJ_EN = plugins_gitlab.get('PROJ_EN','')
+PROJ_RU = plugins_gitlab.get('PROJ_RU','')
 
 def get_tele_command(update: Update) -> str:
-   #print('---update:---',update)
    try:
       if update.message.text:
          return update.message.text, update.message
@@ -60,28 +65,32 @@ def command_daily(update: Update, context: CallbackContext, reportDate = '' ) ->
     put_report(update=update, fromDate=fromDate,label=labels)
 
 def lab_replay(lb: str, direct: str):
+  if not PROJ_RU:
+    return lb
   _i=0
   if direct=='ru_en':
-    for _ru in proj_ru.split(","):
-      lb=lb.replace(_ru, proj_en.split(",")[_i])
+    for _ru in PROJ_RU.split(","):
+      lb=lb.replace(_ru, PROJ_EN.split(",")[_i])
       _i += 1
     lb=lb.replace("Табель","tabel").replace(",","_")
   else:
-    for _en in proj_en.split(","):
-      lb=lb.replace(_en, proj_ru.split(",")[_i])
+    for _en in PROJ_EN.split(","):
+      lb=lb.replace(_en, PROJ_RU.split(",")[_i])
       _i += 1
     lb=lb.replace("tabel","Табель").replace("_",",")
   return lb
   
 def get_lab(cmdmess: str):
-    lab = "Рейтинг" 
-    _i=0
-    for _en in proj_en.split(","):
-      if f'_{_en}' in cmdmess:
-        lab =  proj_ru.split(",")[_i]
-        break
-      _i += 1
-    return lab
+  if not PROJ_EN:
+    return 'CODE_GITLAB_PLUGIN_NOT'
+  lab = "Рейтинг" 
+  _i=0
+  for _en in PROJ_EN.split(","):
+    if f'_{_en}' in cmdmess:
+      lab =  PROJ_RU.split(",")[_i]
+      break
+    _i += 1
+  return lab
 
 def command_daily_rating_noname(update: Update, context: CallbackContext,lab = "") -> None:
     u = User.get_user(update, context)

@@ -1,9 +1,18 @@
 import logging
 import os
 import sys
-
+import json
 import dj_database_url
 import dotenv
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+consolehandler = logging.StreamHandler()
+consolehandler.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+consolehandler.setFormatter(formatter)
+logger.addHandler(consolehandler)
+
 
 from pathlib import Path
 
@@ -42,9 +51,23 @@ settings = Dynaconf(
         
     ],
 )
-print('======== ENV_FOR_DYNACONF: ',settings.get("ENV_FOR_DYNACONF",""))
-plug=settings.get("PLUGINS")
-print('======== PLUGINS: ',type(plug))
+
+logger.info('======== ENV_FOR_DYNACONF: '+str(settings.get("ENV_FOR_DYNACONF","")))
+def get_plugins(name_plug):
+    plug = settings.get("PLUGINS")
+    ret = {}
+    for pl in plug:
+        pldict=dict(pl)
+        item= pldict.get(name_plug)
+        if item:
+            for it in item:
+                if ' = ' in it:
+                    key = it.split(' = ')[0]
+                    val = it.split(' = ')[1]
+                if key:
+                    ret[key]=val
+                    #print('===',val)
+    return ret
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv(

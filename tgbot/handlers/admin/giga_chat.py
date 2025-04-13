@@ -1,4 +1,5 @@
-# Plugin giga-chat
+# Plugin for giga-chat bot
+# Name Plugin: GIGA
 # pip install langchain-gigachat
 # https://developers.sber.ru/docs/ru/gigachain/overview
 # https://developers.sber.ru/docs/ru/gigachat/api/images-generation?tool=python&lang=py
@@ -13,17 +14,16 @@
 #	🕒 Время события: 18:30 15.03.2025
 #	👤 Инициатор: Ivan Ashikhmin
 #	👥 Ответственный(е): Ivan Ashikhmin
-#	🔄 Изменения:
-#	⬇️
-
+#	🔄 Изменения:#	⬇️
 
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_gigachat.chat_models import GigaChat
-import os
-GIGA_TOKEN = os.getenv('GIGA_CHAT')
+from dtb.settings import get_plugins
+GIGA_TOKEN = get_plugins('GIGA').get("GIGA_CHAT")
 
 def ask_giga(prompt):
-    
+    if not GIGA_TOKEN:
+        return "Токен для Giga не опрделен"
     giga = GigaChat(
         # Для авторизации запросов используйте ключ, полученный в проекте GigaChat API
         credentials=GIGA_TOKEN,
@@ -38,9 +38,6 @@ def ask_giga(prompt):
     res = giga.invoke(messages)
     messages.append(res)
     return res.content
-
-
-
 '''
 """Пример работы с чатом"""
 from gigachat import GigaChat
@@ -65,7 +62,7 @@ with GigaChat(credentials=..., verify_ssl_certs=False) as giga:
         response = giga.chat(payload)
         payload.messages.append(response.choices[0].message)
         print("Bot: ", response.choices[0].message.content)
-'''
+
 
 # Пример использования  python tgbot/handlers/admin/giga_chat.py 
 if __name__ == "__main__":
@@ -88,3 +85,4 @@ if __name__ == "__main__":
         res = giga.invoke(messages)
         messages.append(res)
         print("GigaChat: ", res.content)
+'''
